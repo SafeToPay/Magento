@@ -1,0 +1,57 @@
+<?php
+/**
+ *
+ * @category   Safe2Pay
+ * @package    Safe2Pay_S2P
+ * @author     Suporte <integracao@safe2pay.com.br>
+ */
+?>
+
+<?php $_invoice = $this->getInvoice(); ?>
+<div class="s2p-invoice-view-content">
+    <div class="content-header">
+        <table cellspacing="0">
+            <tr>
+                <td style="width:50%;"><h3 class="icon-head head-sales-order"><?php echo $this->__('Invoice: %s | %s', $_invoice->getId(), $_invoice->getCreatedAt()) ?></h3></td>
+            </tr>
+        </table>
+    </div>
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo $this->__('Detalhes da Compra') ?></h4>
+        </div>
+        <div class="fieldset">
+            <table cellspacing="0" class="form-list">
+                <tr>
+                    <td class="label"><label><?php echo $this->__('Método de Pagamento') ?></label></td>
+                    <td class="value"><strong><?php echo $this->__('Criptomoedas') ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo $this->__('Total') ?></label></td>
+                    <td class="value"><strong class="emph"><?php echo $this->getTotal() ?></strong></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo $this->__('Status') ?></label></td>
+                    <td class="value"><strong class="s2p-status <?php echo $_invoice->getStatus() ?>"><?php echo $this->escapeHtml($this->getStatusLabel()) ?></strong></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <?php if ($_invoice->getLogs()): ?>
+        <div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4 class="icon-head head-history"><?php echo $this->__('Histórico') ?></h4>
+            </div>
+            <div class="fieldset">
+                <table cellspacing="0" class="form-list">
+                    <?php foreach ($_invoice->getLogs() as $_log): ?>
+                        <tr>
+                            <td class="label"><label><?php echo $_log->getCreatedAt() ?></label></td>
+                            <td class="value"><strong><?php echo $_log->getDescription() ?></strong></td>
+                        </tr>
+                    <?php endforeach ?>
+                </table>
+            </div>
+        </div>
+    <?php endif ?>
+</div>

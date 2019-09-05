@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category   Safe2Pay
+ * @package    Safe2Pay_S2P
+ * @author     Suporte <integracao@safe2pay.com.br>
+ */
+ -->
+<config>
+    <modules>
+        <Safe2Pay_S2P>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Mage_Payment />
+            </depends>
+        </Safe2Pay_S2P>
+    </modules>
+</config>

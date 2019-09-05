@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category   Safe2Pay
+ * @package    Safe2Pay_S2P
+ * @author     Suporte <integracao@safe2pay.com.br>
+ */
+-->
+
+<layout>
+    <!-- S2P Info Handle -->
+    <s2p_info_handle>
+        <reference name="head">
+            <action method="addJs"><script>prototype/window.js</script></action>
+            <action method="addItem"><type>js_css</type><name>prototype/windows/themes/default.css</name></action>
+            <action method="addCss"><name>lib/prototype/windows/themes/magento.css</name></action>
+            <action method="addCss"><name>s2p/css/styles.css</name></action>
+            <action method="addJs"><script>s2p/s2p.js</script></action>
+        </reference>
+    </s2p_info_handle>
+
+    <adminhtml_sales_order_view>
+        <update handle="s2p_info_handle"/>
+    </adminhtml_sales_order_view>
+
+    <adminhtml_sales_order_invoice_new>
+        <update handle="s2p_info_handle"/>
+    </adminhtml_sales_order_invoice_new>
+
+    <adminhtml_sales_order_invoice_view>
+        <update handle="s2p_info_handle"/>
+    </adminhtml_sales_order_invoice_view>
+
+    <adminhtml_sales_order_creditmemo_new>
+        <update handle="s2p_info_handle"/>
+    </adminhtml_sales_order_creditmemo_new>
+
+    <adminhtml_sales_order_creditmemo_view>
+        <update handle="s2p_info_handle"/>
+    </adminhtml_sales_order_creditmemo_view>
+
+    <adminhtml_sales_order_shipment_new>
+        <update handle="s2p_info_handle"/>
+    </adminhtml_sales_order_shipment_new>
+
+    <adminhtml_sales_order_shipment_view>
+        <update handle="s2p_info_handle"/>
+    </adminhtml_sales_order_shipment_view>
+
+    <adminhtml_s2p_invoice_view>
+        <update handle="popup"/>
+        <remove name="footer"/>
+        <reference name="head">
+            <action method="addCss"><name>s2p/css/styles.css</name></action>
+        </reference>
+    </adminhtml_s2p_invoice_view>
+</layout>

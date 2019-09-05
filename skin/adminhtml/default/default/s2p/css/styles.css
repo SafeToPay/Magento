@@ -1,0 +1,10 @@
+/**
+ *
+ * @category   Safe2Pay
+ * @package    Safe2Pay_S2P
+ * @author     Suporte <integracao@safe2pay.com.br>
+ */
+
+.s2p-status { color: #eb5e00; }
+.s2p-status.paid { color: #147C25; }
+.s2p-invoice-view-content { padding: 14px; }

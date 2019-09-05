@@ -1,0 +1,28 @@
+.s2p-payment-icons { font-size: 1px; }
+.s2p-payment-icons li { background: url(../images/icons.png) no-repeat; margin: 0 2px 0 0 !important; width: 51px; height: 32px; display: inline-block; }
+.s2p-payment-icons li span { display: none; }
+.s2p-payment-icons li.boleto { background-position: -51px 0; }
+.s2p-payment-icons li.boleto.on { background-position: 0 0; }
+.s2p-payment-icons li.VI { background-position: -51px -32px; }
+.s2p-payment-icons li.VI.on { background-position: 0 -32px; }
+.s2p-payment-icons li.MC { background-position: -51px -64px; }
+.s2p-payment-icons li.MC.on { background-position: 0 -64px; }
+.s2p-payment-icons li.AE { background-position: -51px -96px; }
+.s2p-payment-icons li.AE.on { background-position: 0 -96px; }
+.s2p-payment-icons li.DC { background-position: -51px -128px; }
+.s2p-payment-icons li.DC.on { background-position: 0 -128px; }
+.s2p-cvv { position: relative; }
+.s2p-cvv input.cvv { width: 4em !important; }
+.s2p-cvv-tool-tip { position: absolute; display: inline-block; left: 5em; top: 0; }
+.s2p-cvv-tool-tip:hover .s2p-cvv-image, .s2p-cvv-tool-tip:hover .s2p-cvv-tool-tip-arrow { display: block; }
+.s2p-cvv-tool-tip-arrow { display: none; position: absolute; top: -10px; left: 16px; background: url(../images/arrow_down.gif) no-repeat; width: 17px; height: 9px; z-index: 101px; }
+.s2p-cvv-icon { cursor: pointer; }
+.s2p-cvv-image { display: none; background: #fff; border: 1px solid #ccc; padding: 10px; position: absolute; top: -235px; z-index: 100px; }
+.s2p-cc-expr-month { width: 68px; margin-right: 0 !important; }
+.s2p-cc-expr-month select.month { width: 64px !important; margin-right: 0 !important; }
+.s2p-cc-expr-year select.year { width: 72px !important; }
+#advice-validate-s2p-cc-exp-s2p_cc_expiration { white-space: nowrap; }
+#advice-validate-s2p-cc-cvn-s2p_cc_cc_cid { white-space: nowrap; }
+.s2p-payment-method-index .title-buttons .button { position: absolute; right: 0; top: 0; }
+.s2p-boleto-tipo-pessoa {margin:15px 0;}
+.s2p-boleto-tipo-pessoa input[type="radio"] { margin-left: 5px; margin-right: 10px; vertical-align: middle;}

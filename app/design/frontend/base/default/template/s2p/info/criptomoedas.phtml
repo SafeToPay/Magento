@@ -1,0 +1,18 @@
+<?php
+/**
+ *
+ * @category   Safe2Pay
+ * @package    Safe2Pay_S2P
+ * @author     Suporte <integracao@safe2pay.com.br>
+ */
+?>
+<?php echo $this->htmlEscape($this->getMethod()->getTitle()) ?>
+
+<?php if($this->getInvoiceUrl()): ?>
+<br />
+
+<img src="<?php echo $this->getInvoiceUrl() ?>" style="width: 150px; height: 150px; margin-top: 20px; margin-bottom: 20px;" />
+
+<?php endif ?>
+
+<?php echo $this->getChildHtml()?>

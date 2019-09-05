@@ -1,0 +1,283 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category   Safe2Pay
+ * @package    Safe2Pay_S2P
+ * @author     Suporte <integracao@safe2pay.com.br>
+ */
+-->
+<config>
+    <sections>
+        <payment>
+            <groups>
+                <s2p_settings translate="label" module="s2p">
+                    <label>Safe2Pay - Configurações</label>
+                    <sort_order>200</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <comment><![CDATA[<a href="https://safe2pay.com.br" target="_blank"><img title="S2P" alt="S2P" id="logo_s2p_settings" height="40" style="margin-bottom: 10px; margin-top: 20px;" /></a><br />
+                    <p>Preencha os campos abaixo com os dados de sua conta. Caso você ainda não possua cadastro no Safe2Pay, não perca tempo e <a href="https://safe2pay.com.br/comecar" target="blank">clique aqui</a> para começar agora mesmo.</p>
+                    <hr style="margin-bottom: 20px" />
+                    <script type="text/javascript">
+                    document.getElementById('logo_s2p_settings').src = SKIN_URL + 's2p/images/logos2p.png';
+                    </script>
+                    ]]></comment>
+                    <fields>
+                        <mode translate="label">
+                            <label>Mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>s2p/source_mode</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </mode>
+                        <token_test translate="label">
+                            <label>Token Sandbox</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <mode>test</mode>
+                            </depends>
+                        </token_test>
+                        <token_live translate="label">
+                            <label>Token</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <mode>live</mode>
+                            </depends>
+                        </token_live>
+
+                        <secret_key_test translate="label">
+                            <label>Secret Key Sandbox</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <mode>test</mode>
+                            </depends>
+                        </secret_key_test>
+                        <secret_key_live translate="label">
+                            <label>Secret Key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <mode>live</mode>
+                            </depends>
+                        </secret_key_live>
+                    </fields>
+                </s2p_settings>
+
+
+
+
+
+
+
+
+
+
+
+
+                <s2p_boleto translate="label" module="s2p">
+                    <label>Safe2Pay - Boleto Bancário</label>
+                    <sort_order>201</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <comment><![CDATA[<a href="https://safe2pay.com.br/solucoes/pagamentos/boleto" target="_blank"><img src="data:image/png;base64,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" title="S2P" alt="S2P" width="50" /></a><br />]]></comment>
+                    <fields>
+                        <active translate="label">
+                            <label>Habilitado</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </active>
+                        <title translate="label">
+                            <label>Título</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <order_status translate="label">
+                            <label>Status de um novo pedido</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_order_status_new</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </order_status>
+                        <instructions translate="label">
+                            <label>Instruções</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </instructions>
+                        <sort_order translate="label">
+                            <label>Ordenação</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                        </sort_order>
+                    </fields>
+                </s2p_boleto>
+
+
+
+
+                <s2p_cc translate="label" module="s2p">
+                    <label>Safe2Pay - Cartão de Crédito</label>
+                    <sort_order>202</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <comment><![CDATA[<a href="https://safe2pay.com.br/solucoes/pagamentos/cartao-de-credito" target="_blank"><img src="data:image/png;base64,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" title="S2P" alt="S2P" width="50" /></a><br />]]></comment>
+                    <fields>
+                        <active translate="label">
+                            <label>Habilitado</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </active>
+                        <title translate="label">
+                            <label>Título</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <order_status translate="label">
+                            <label>Status de um novo pedido</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_order_status_processing</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </order_status>
+                        <max_installments translate="label">
+                            <label>Número máximo de parcelas</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>s2p/source_installment</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </max_installments>
+                        <min_installment_value translate="label">
+                            <label>Parcela mínima</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>required-entry validate-number</validate>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </min_installment_value>
+                        <interest_rate translate="label">
+                            <label>Parcelamento</label>
+                            <frontend_model>s2p/adminhtml_system_config_form_field_interest</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </interest_rate>
+                        <sort_order translate="label">
+                            <label>Ordenação</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                        </sort_order>
+                    </fields>
+                </s2p_cc>
+
+
+
+
+<s2p_criptomoedas translate="label" module="s2p">
+                    <label>Safe2Pay - Criptomoedas</label>
+                    <sort_order>203</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <comment><![CDATA[<a href="https://safe2pay.com.br/solucoes/pagamentos/bitcoin" target="_blank"><img src="data:image/png;base64,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" title="S2P" alt="S2P" width="50" /></a><br />]]></comment>
+                    <fields>
+                        <active translate="label">
+                            <label>Habilitado</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </active>
+                        <title translate="label">
+                            <label>Título</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <order_status translate="label">
+                            <label>Status de um novo pedido</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_order_status_new</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </order_status>
+                        <sort_order translate="label">
+                            <label>Ordenação</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                        </sort_order>
+                    </fields>
+                </s2p_criptomoedas>
+
+
+
+
+
+
+            </groups>
+        </payment>
+    </sections>
+</config>

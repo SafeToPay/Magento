@@ -1,0 +1,18 @@
+<?php
+/**
+ *
+ * @category   Safe2Pay
+ * @package    Safe2Pay_S2P
+ * @author     Suporte <integracao@safe2pay.com.br>
+ */
+?>
+<?php echo $this->htmlEscape($this->getMethod()->getTitle()) ?>
+
+<?php if($this->getInfo()): ?>
+    <br /><?php echo $this->escapeHtml($this->getInstallmentDescription()) ?>
+    <?php if ($this->getBaseAmountOrdered() != $this->getTotalWithInterest()): ?>
+    <br /><?php echo $this->helper('s2p')->__('Valor Total') ?> <?php echo $this->helper('core')->formatPrice($this->getTotalWithInterest(), true); ?>
+    <?php endif ?>
+<?php endif ?>
+
+<?php echo $this->getChildHtml()?>

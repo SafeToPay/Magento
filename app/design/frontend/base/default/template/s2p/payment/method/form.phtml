@@ -1,0 +1,81 @@
+<?php
+/**
+ * @category   Safe2Pay
+ * @package    Safe2Pay_S2P
+ * @author     Suporte <integracao@safe2pay.com.br>
+ */
+?>
+<?php if($this->getTitle()): ?>
+    <div class="page-title">
+        <h1><?php echo $this->getTitle() ?></h1>
+    </div>
+<?php endif; ?>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<form action="<?php echo $this->getSavePaymentMethodUrl() ?>" method="post" id="form-payment" autocomplete="off">
+    <?php $_code = 's2p_cc'; ?>
+    <ul class="form-list" id="payment_form_<?php echo $_code ?>">
+        <li style="display: none;">
+            <input type="hidden" id="<?php echo $_code ?>_token" name="payment[token]" value="" />
+            <select id="<?php echo $_code ?>_cc_type" title="<?php echo $this->__('Credit Card Type') ?>" style="display: none;">
+                <option value=""><?php echo $this->__('--Selecione--') ?></option>
+                <?php foreach ($this->getCcAvailableTypes() as $_typeCode => $_typeName): ?>
+                    <option value="<?php echo $_typeCode ?>"><?php echo $_typeName ?></option>
+                <?php endforeach ?>
+            </select>
+        </li>
+        <li>
+            <label for="<?php echo $_code ?>_cc_number" class="required"><em>*</em><?php echo $this->__('Número do cartão') ?></label>
+            <div class="input-box">
+                <input type="text" id="<?php echo $_code ?>_cc_number" title="<?php echo $this->__('Número do cartão') ?>" class="input-text s2p-only-number required-entry validate-s2p-cc-number" autocomplete="off" data-s2p="number" maxlength="19" value="" />
+            </div>
+        </li>
+        <li>
+            <label for="<?php echo $_code ?>_cc_owner" class="required"><em>*</em><?php echo $this->__('Nome do titular impresso no cartão') ?></label>
+            <div class="input-box">
+                <input type="text" title="<?php echo $this->__('Nome do titular impresso no cartão') ?>" class="input-text required-entry" data-s2p="full_name" id="<?php echo $_code ?>_cc_owner" value="" />
+            </div>
+        </li>
+        <li>
+            <label for="<?php echo $_code ?>_expiration" class="required"><em>*</em><?php echo $this->__('Validade do cartão') ?></label>
+            <div class="input-box">
+                <div class="v-fix s2p-cc-expr-month">
+                    <select id="<?php echo $_code ?>_expiration" class="month validate-s2p-cc-exp">
+                        <?php foreach ($this->getCcMonths() as $k=>$v): ?>
+                            <option value="<?php echo $k?$k:'' ?>"><?php echo $v ?></option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+                <div class="v-fix s2p-cc-expr-year">
+                    <span>/</span>
+                    <select id="<?php echo $_code ?>_expiration_yr" class="year">
+                        <?php foreach ($this->getCcYears() as $k=>$v): ?>
+                            <option value="<?php echo $k?$k:'' ?>"><?php echo $v ?></option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+                <input type="hidden" id="<?php echo $_code ?>_cc_expiration" data-s2p="expiration" value="" />
+            </div>
+        </li>
+        <?php echo $this->getChildHtml() ?>
+        <li>
+            <label for="<?php echo $_code ?>_cc_cid" class="required"><em>*</em><?php echo $this->__('Código de verificação (CVV)') ?></label>
+            <div class="input-box">
+                <div class="v-fix s2p-cvv">
+                    <input type="text" id="<?php echo $_code ?>_cc_cid" title="<?php echo $this->__('Código de verificação (CVV)') ?>" class="input-text s2p-only-number cvv required-entry validate-s2p-cc-cvn" autocomplete="off" data-s2p="verification_value" maxlength="4" value="" />
+                    <div class="s2p-cvv-tool-tip">
+                        <img src="<?php echo $this->getSkinUrl('s2p/images/icon_cvv.gif') ?>" class="s2p-cvv-icon" />
+                        <div class="s2p-cvv-image"><img src="<?php echo $this->getSkinUrl('s2p/images/cvv.gif') ?>" alt="<?php echo $this->__('Card Verification Number Visual Reference') ?>" title="<?php echo $this->__('Card Verification Number Visual Reference') ?>" /></div>
+                        <span class="s2p-cvv-tool-tip-arrow">&nbsp;</span>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <div class="buttons-set">
+        <p class="back-link"><a href="<?php echo $this->escapeUrl($this->getBackUrl()) ?>"><small>&laquo; </small><?php echo $this->__('Voltar') ?></a></p>
+        <button type="submit" title="<?php echo $this->__('Salvar Cartão') ?>" class="button"><span><span><?php echo $this->__('Salvar Cartão') ?></span></span></button>
+    </div>
+</form>
+
+
+

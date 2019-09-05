@@ -1,0 +1,16 @@
+<?php
+/**
+ *
+ * @category   Safe2Pay
+ * @package    Safe2Pay_S2P
+ * @author     Suporte <integracao@safe2pay.com.br>
+ */
+?>
+<?php echo $this->htmlEscape($this->getMethod()->getTitle()) ?>
+
+<?php if($this->getInvoiceUrl()): ?>
+<br />
+<a href="<?php echo $this->getInvoiceUrl() ?>" target="_blank"><?php echo $this->__('Clique aqui para baixar o seu boleto') ?></a>
+<?php endif ?>
+
+<?php echo $this->getChildHtml()?>

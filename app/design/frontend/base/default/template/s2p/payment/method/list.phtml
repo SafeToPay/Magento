@@ -1,0 +1,58 @@
+<?php
+/**
+ * @category   Safe2Pay
+ * @package    Safe2Pay_S2P
+ * @author     Suporte <integracao@safe2pay.com.br>
+ */
+?>
+<?php $_items = $this->getItems(); ?>
+<div class="page-title title-buttons">
+    <h1><?php echo $this->__('Meus Cartões de Crédito') ?></h1>
+    <button type="button" title="<?php echo $this->__('Incluir novo cartão') ?>" class="button" onclick="window.location='<?php echo $this->getAddPaymentMethodUrl() ?>';"><span><span><?php echo $this->__('Incluir novo cartão') ?></span></span></button>
+</div>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php if(count($_items)): ?>
+    <table class="data-table" id="my-payment-methods-table">
+        <col width="1" />
+        <col />
+        <col />
+        <col width="1" />
+        <thead>
+            <tr>
+                <th><?php echo Mage::helper('s2p')->__('Tipo') ?></th>
+                <th><?php echo Mage::helper('s2p')->__('Número do Cartão') ?></th>
+                <th><?php echo Mage::helper('s2p')->__('Incluído em') ?></th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($_items as $_item): ?>
+            <?php $_paymentInfo = $_item->getData('data'); ?>
+            <tr>
+                <td><span class="nobr"><?php echo $_paymentInfo->getDisplayNumber() ?></span></td>
+                <td><?php echo Mage::getModel('core/date')->date('d/m/Y', $_item->getDescription()) ?></td>
+                <td class="a-center">
+                    <span class="nobr">
+                        <a class="btn-remove btn-remove2" title="<?php echo $this->__('Excluir esse Cartão') ?>" href="#" onclick="return deletePaymentMethod('<?php echo $this->getUrl('*/*/delete', array('id' => $_item->getId())) ?>');"><?php echo $this->__('Excluir esse Cartão') ?></a>
+                    </span>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+    <script type="text/javascript">decorateTable('my-payment-methods-table')</script>
+<?php else: ?>
+    <p><?php echo Mage::helper('s2p')->__('Você ainda não adicionou nenhum cartão.'); ?></p>
+<?php endif ?>
+
+<div class="buttons-set">
+    <p class="back-link"><a href="<?php echo $this->escapeUrl($this->getBackUrl()) ?>"><small>&laquo; </small><?php echo $this->__('Voltar') ?></a></p>
+</div>
+<script type="text/javascript">
+    function deletePaymentMethod(url) {
+        if(confirm('<?php echo $this->__('Você tem certeza que deseja excluir esse cartão?') ?>')) {
+            window.location=url;
+        }
+        return false;
+    }
+</script>
