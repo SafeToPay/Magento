@@ -7,12 +7,6 @@
  */
 class Safe2Pay_S2P_Model_Api extends Safe2Pay_S2P_Model_Api_Abstract
 {
-    //const PAYMENT_METHOD_BOLETO = 'bank_slip';
-    //const PAYMENT_METHOD_CREDIT_CARD = 'credit_card';
-
-
-
-
     const INVOICE_STATUS_DRAFT              = 'draft';
     const INVOICE_STATUS_PENDING            = 'pending';
     const INVOICE_STATUS_PARTIALLY_PAID     = 'partially_paid';

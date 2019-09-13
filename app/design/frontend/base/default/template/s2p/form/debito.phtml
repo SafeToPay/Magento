@@ -1,0 +1,231 @@
+<?php
+/**
+ * @category    Safe2Pay
+ * @package     Safe2Pay_S2P
+ * @copyright   Copyright (c) 2014 Safe2Pay. (https://safe2pay.com.br)
+ */
+?>
+<?php $_code=$this->getMethodCode() ?>
+
+<ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
+    
+<!-- <li>
+
+<div class="input-box s2p-debito-tipo-pessoa">
+    <label for="debito_tipo_fisica"><input type="radio" name="debito_tipo_pessoa" id="debito_tipo_fisica" checked> Pessoa física</label>
+    <label for="debito_tipo_juridica"><input type="radio" name="debito_tipo_pessoa" id="debito_tipo_juridica"> Pessoa jurídica</label>
+</div>
+
+</li>
+<li>
+<label for="<?php echo $_code ?>_cpf_cnpj" id="label-s2p-debito-tipo-pessoa" class="required"><em>*</em><?php echo $this->__('CPF do comprador') ?></label>
+<div class="input-box">
+    <input type="text" id="<?php echo $_code ?>_cpf_cnpj" name="payment[s2p_customer_identity]" title="<?php echo $this->__('CPF do comprador') ?>" class="input-text required-entry" autocomplete="off" />
+</div>
+</li>
+ -->
+
+
+
+    <li>
+        <label for="<?php echo $_code ?>_cc_number" class="required"><em>*</em><?php echo $this->__('Número do cartão') ?></label>
+        <div class="input-box">
+            <input name="payment[s2p_card_number]" type="text" id="<?php echo $_code ?>_cc_number" title="<?php echo $this->__('Número do cartão') ?>" class="input-text s2p-only-number required-entry validate-s2p-cc-number" autocomplete="off" data-s2p="number" maxlength="19" value="" />
+        </div>
+    </li>
+
+    <li>
+        <label for="<?php echo $_code ?>_cc_owner" class="required"><em>*</em><?php echo $this->__('Nome do titular impresso no cartão') ?></label>
+        <div class="input-box">
+            <input name="payment[s2p_card_holder]" type="text" title="<?php echo $this->__('Nome do titular impresso no cartão') ?>" class="input-text required-entry" data-s2p="full_name" id="<?php echo $_code ?>_cc_owner" value="" />
+        </div>
+    </li>
+
+    
+    <li>
+        <label for="<?php echo $_code ?>_expiration" class="required"><em>*</em><?php echo $this->__('Validade do cartão') ?></label>
+        <div class="input-box">
+            <div class="v-fix s2p-cc-expr-month">
+                <select name="payment[s2p_card_expiration_month]" id="<?php echo $_code ?>_expiration" class="month validate-s2p-cc-exp">
+                    <?php foreach ($this->getCcMonths() as $k=>$v): ?>
+                        <option value="<?php echo $k?$k:'' ?>"><?php echo $v ?></option>
+                    <?php endforeach ?>
+                </select>
+            </div>
+            <div class="v-fix s2p-cc-expr-year">
+                <span>/</span>
+                <select name="payment[s2p_card_expiration_year]" id="<?php echo $_code ?>_expiration_yr" class="year">
+                    <?php foreach ($this->getCcYears() as $k=>$v): ?>
+                        <option value="<?php echo $k?$k:'' ?>"><?php echo $v ?></option>
+                    <?php endforeach ?>
+                </select>
+            </div>
+            <input type="hidden" id="<?php echo $_code ?>_cc_expiration" data-s2p="expiration" value="" />
+        </div>
+    </li>
+    <?php echo $this->getChildHtml() ?>
+    
+    <li>
+            <label for="<?php echo $_code ?>_cc_cid" class="required"><em>*</em><?php echo $this->__('Código de verificação (CVV)') ?></label>
+            <div class="input-box">
+                <div class="v-fix s2p-cvv">
+                    <input name="payment[s2p_card_verification]" type="text" id="<?php echo $_code ?>_cc_cid" title="<?php echo $this->__('Código de verificação (CVV)') ?>" class="input-text s2p-only-number cvv required-entry validate-s2p-cc-cvn" autocomplete="off" data-s2p="verification_value" maxlength="4" value="" />
+                    <div class="s2p-cvv-tool-tip">
+                        <img src="<?php echo $this->getSkinUrl('s2p/images/icon_cvv.gif') ?>" class="s2p-cvv-icon" />
+                        <div class="s2p-cvv-image"><img src="<?php echo $this->getSkinUrl('s2p/images/cvv.gif') ?>" alt="<?php echo $this->__('Card Verification Number Visual Reference') ?>" title="<?php echo $this->__('Card Verification Number Visual Reference') ?>" /></div>
+                        <span class="s2p-cvv-tool-tip-arrow">&nbsp;</span>
+                    </div>
+                </div>
+            </div>
+        </li>
+    <!--<li class="control">
+        <input type="checkbox" name="payment[s2p_save]" id="<?php echo $_code ?>_save" value="1" <?php if($this->getInfoData('s2p_save')): ?> checked="checked"<?php endif; ?> title="<?php echo $this->__('Salvar cartão para compras futuras') ?>" class="checkbox" /><label for="<?php echo $_code ?>_save"><?php echo $this->__('Salvar cartão para compras futuras') ?></label>
+    </li>-->
+</ul>
+
+
+
+
+
+
+<script type="text/javascript">
+    //<![CDATA[
+
+    //var debito_cpf_cnpj_field = document.getElementById('<?php echo $_code ?>_cpf_cnpj');
+	//var formatted = new Formatter(debito_cpf_cnpj_field, { 'pattern': '{{999}}.{{999}}.{{999}}-{{99}}', 'persistent': false });
+
+//  $('debito_tipo_fisica').observe('change', function() { 
+  	
+//   	  $('label-s2p-debito-tipo-pessoa').update("<?php echo $this->__('CPF do comprador') ?>");
+  	
+//   	  debito_cpf_cnpj_field.value = ''; 
+  	  
+// 	  formatted.resetPattern('{{999}}.{{999}}.{{999}}-{{99}}');
+//   });
+
+//   $('debito_tipo_juridica').observe('change', function() { 
+//   	  $('label-s2p-debito-tipo-pessoa').update("<?php echo $this->__('CNPJ do comprador') ?>");
+  	
+//   	  debito_cpf_cnpj_field.value = ''; 
+  	
+// 	  formatted.resetPattern('{{99}}.{{999}}.{{999}}/{{9999}}-{{99}}'); 
+// 	});
+
+//   <?php echo 'var cpf_cnpj = "'.$this->getCpfCnpj().'";'; ?>
+//   if(cpf_cnpj.length == 14)
+//   {
+//     $("debito_tipo_fisica").click();
+//   }
+//   else if(cpf_cnpj.length == 18)
+//   {
+//     $("debito_tipo_juridica").click();
+//   }
+	
+	
+//   //$("<?php echo $_code ?>_name").value = nome_razaosocial;
+//   $("<?php echo $_code ?>_cpf_cnpj").value = cpf_cnpj;
+
+
+
+    Event.observe($('<?php echo $_code ?>_expiration'), 'change', function(){
+        var month = ("0" + this.value).slice(-2);
+        var year = $(this.id.substr(0,this.id.indexOf('_expiration')) + '_expiration_yr').value;
+        $(this.id.substr(0,this.id.indexOf('_expiration')) + '_cc_expiration').value = month + '/' + year;
+    });
+
+    Event.observe($('<?php echo $_code ?>_expiration_yr'), 'change', function(){
+        var month = ("0" + $(this.id.substr(0,this.id.indexOf('_expiration_yr')) + '_expiration').value).slice(-2);
+        var year = this.value;
+        $(this.id.substr(0,this.id.indexOf('_expiration')) + '_cc_expiration').value = month + '/' + year;
+    });
+
+    Event.observe($('<?php echo $_code ?>_cc_number'), 'change', function(){
+        var skipChange = $(this.id.substr(0,this.id.indexOf('_cc_number')) + '_s2p_customer_payment_method_id')
+            && $(this.id.substr(0,this.id.indexOf('_cc_number')) + '_s2p_customer_payment_method_id').value != "";
+        if (skipChange) {
+            return;
+        }
+
+        //var typesContainer = $(this.id.substr(0,this.id.indexOf('_cc_number')) + '_types');
+        // var ccTypeContainer = $(this.id.substr(0,this.id.indexOf('_cc_number')) + '_cc_type');
+        // var ccCidContainer = $(this.id.substr(0,this.id.indexOf('_cc_number')) + '_cc_cid');
+        // var ccNumber = this.value;
+        // var ccType;
+
+        // if (ccNumber.length >= 6) {
+        //     Validation.creditCartTypes.each(function (pair) {
+        //         if (pair.value[3] && ccNumber.match(pair.value[3])) {
+        //             ccType = pair.key;
+        //             throw $break;
+        //         }
+        //     });
+        // }
+        // ccTypeContainer.value = ccType ? ccType : '';
+
+        // if (ccNumber) {
+        //     typesContainer.select('li').invoke('removeClassName', 'on');
+        //     if (ccType && ccType == ccTypeContainer.value) {
+        //         typesContainer.down('.' + ccType).addClassName('on');
+        //     }
+        // } else {
+        //     typesContainer.select('li').invoke('addClassName', 'on');
+        // }
+
+        // if (ccCidContainer.value) {
+        //     Validation.validate(ccCidContainer);
+        // }
+    });
+
+    Event.observe($('<?php echo $_code ?>_cc_number'), 'keyup', function(){
+        fireEvent(this, 'change');
+    });
+
+    Event.observe($('<?php echo $_code ?>_cc_number'), 'focus', function() {
+        fireEvent(this, 'keypress');
+    });
+
+
+    // allow only numbers
+    $$('input.s2p-only-number').find(function(input){
+        Event.observe(input, 'keydown', function(e){
+            var code = e.keyCode || e.which;
+            var isOnlyNumber = ((code > 47 && code < 58 && e.shiftKey == false)
+            || (code > 95 && code < 106)
+            || (e.ctrlKey || code == 8 || code == 9 || code == 13 || code == 16 || code == 35 || code == 36 || code == 37 || code == 38 || code == 39 || code == 40 || code == 46));
+
+            if (!isOnlyNumber) {
+                e.stop();
+            }
+        });
+
+        Event.observe(input, 'blur', function(e){
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        // prevent menu from right click
+        Event.observe(input, 'contextmenu', function(e){
+            e.stop();
+        })
+    });
+
+    $$('input[name="payment[method]"]').find(function(radio) {
+        Event.observe(radio, 'change', function() {
+            if(radio.value == '<?php echo $_code ?>') {
+                fireEvent($('<?php echo $_code ?>_cc_number'), 'change');
+            } else {
+               // $('<?php echo $_code ?>_types').select('li').invoke('addClassName', 'on');
+            }
+        });
+    });
+
+    // Fill the form
+    if (typeof payment !== "undefined" && payment.currentMethod == 's2p_cc' && payment.s2p_cc_data) {
+        $H(payment.s2p_cc_data).each(function(field){
+            $(payment.currentMethod+'_'+field.key).value = field.value;
+            fireEvent($(payment.currentMethod+'_'+field.key), 'change');
+        });
+    }
+
+    fireEvent($('<?php echo $_code ?>_cc_number'), 'change');
+    //]]>
+</script>

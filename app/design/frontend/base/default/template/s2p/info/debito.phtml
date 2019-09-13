@@ -9,17 +9,8 @@
 <?php echo $this->htmlEscape($this->getMethod()->getTitle()) ?>
 
 <?php if($this->getInvoiceUrl()): ?>
-
-
-<span>(<?php echo $this->getCriptoAmount() ?> <?php echo $this->getCriptoSymbol() ?>)</span>
-
 <br />
-
-<center>
-    <img src="<?php echo $this->getInvoiceUrl() ?>" style="width: 150px; height: 150px; margin-top: 5px;" />
-</center>
-
-
+<a href="<?php echo $this->getInvoiceUrl() ?>" target="_blank"><?php echo $this->__('Clique aqui para abrir o ambiente bancário') ?></a>
 <?php endif ?>
 
 <?php echo $this->getChildHtml()?>

@@ -18,7 +18,7 @@ class Safe2Pay_S2P_Block_Info_Criptomoedas extends Mage_Payment_Block_Info
      */
     public function getInvoiceId()
     {
-        return $this->getInfo()->getSafe2payTransactionId();
+        return $this->getInfo()->getS2pTransactionId();
     }
 
    /**
@@ -26,6 +26,21 @@ class Safe2Pay_S2P_Block_Info_Criptomoedas extends Mage_Payment_Block_Info
      */
     public function getInvoiceUrl()
     {
-        return $this->getInfo()->getS2pQrcode();
+        return $this->getInfo()->getS2pUrl();
+    }
+
+    public function getCriptoAmount()
+    {
+        return $this->getInfo()->getS2pCriptoAmount();
+    }
+
+    public function getCriptoSymbol()
+    {
+        return $this->getInfo()->getS2pCriptoSymbol();
+    }
+
+    public function getCriptoWalletAddress()
+    {
+        return $this->getInfo()->getS2pCriptoWalletAddress();
     }
 }

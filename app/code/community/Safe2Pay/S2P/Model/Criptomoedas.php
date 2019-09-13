@@ -25,8 +25,10 @@ class Safe2Pay_S2P_Model_Criptomoedas extends Mage_Payment_Model_Method_Abstract
         $info = $this->getInfoInstance();
         $info->setInstallments(null)
             ->setInstallmentDescription(null)
-            ->setS2pBoletoCpfCnpj($data->getS2pBoletoCpfCnpj())
-            ->setS2pCriptoSymbol($data->getS2pCriptoSymbol());
+            ->setS2pCustomerIdentity($data->getS2pCustomerIdentity())
+            ->setS2pCriptoWalletAddress($data->getS2pCriptoWalletAddress())
+            ->setS2pCriptoSymbol($data->getS2pCriptoSymbol())
+            ->setS2pCriptoAmount($data->getS2pCriptoAmount());
         return $this;
     }
 
@@ -54,10 +56,14 @@ class Safe2Pay_S2P_Model_Criptomoedas extends Mage_Payment_Model_Method_Abstract
                              'StateInitials' => $order->getBillingAddress()->getRegionCode(),
                              'CountryName' => 'Brasil'];
                 
+        $customer_session = Mage::getSingleton('customer/session')->getCustomer();
+        $customer_registry = Mage::getModel('customer/customer')->load($customer_session->getId());
+        $identity = $customer_registry->getData('taxvat');
 
         $customer = (object) ['Name' => $order->getCustomerName(),
-                              'Identity' => Zend_Filter::filterStatic($payment->getS2pBoletoCpfCnpj(), 'Digits'),
+                              'Identity' => Zend_Filter::filterStatic($identity, 'Digits'),
                               'Email' => $order->getCustomerEmail(),
+                              'Phone' => Zend_Filter::filterStatic($order->getBillingAddress()->getTelephone(), 'Digits'),
                               'Address' => $address];
 
 
@@ -78,9 +84,9 @@ class Safe2Pay_S2P_Model_Criptomoedas extends Mage_Payment_Model_Method_Abstract
         if ($order->getBaseShippingAmount() > 0) 
         {
             $shipping = (object) ['Code' => '1',
-                                'Description' => $order->getShippingDescription(),
-                                'Quantity' => 1,
-                                'UnitPrice' => $order->getBaseShippingAmount()];
+                                  'Description' => $order->getShippingDescription(),
+                                  'Quantity' => 1,
+                                  'UnitPrice' => $order->getBaseShippingAmount()];
 
             $products[] = $shipping;
         }
@@ -88,9 +94,9 @@ class Safe2Pay_S2P_Model_Criptomoedas extends Mage_Payment_Model_Method_Abstract
         $crypto =  (object) ['Symbol' => $payment->getS2pCriptoSymbol()];
 
         $transaction = (object) ['Application' => 'Magento ' . Mage::getVersion(),
-                                 'Reference' => $order->getId(),
+                                 'Reference' => $order->getIncrementId(),
                                  'IsSandbox' => Mage::helper('s2p')->getMode() == "test" ? true : false,
-                                 'CallbackUrl' => Mage::getUrl('s2p/callback'),
+                                 'CallbackUrl' => Mage::app()->getStore(0)->getBaseUrl().'s2p/notification/notify/',
                                  'Customer' => $customer,
                                  'PaymentMethod' => $paymentMethod,
                                  'Products' => $products,
@@ -103,8 +109,27 @@ class Safe2Pay_S2P_Model_Criptomoedas extends Mage_Payment_Model_Method_Abstract
             Mage::throwException($result->Error);
         }
 
-        $payment->setSafe2payTransactionId($result->ResponseDetail->IdTransaction)
-            ->setS2pUrl($result->ResponseDetail->QrCode);
+        $AmountCripto = 0;
+
+        switch ($result->ResponseDetail->Symbol)
+        {
+            case "BTC":
+                $AmountCripto = $result->ResponseDetail->AmountBTC;
+                break;
+            case "LTC":
+                $AmountCripto = $result->ResponseDetail->AmountLTC;
+                break;
+            case "BCH":
+                $AmountCripto = $result->ResponseDetail->AmountBCH;
+                break;
+        }
+
+        $payment->setS2pTransactionId($result->ResponseDetail->IdTransaction)
+            ->setS2pPaymentMethod(3)
+            ->setS2pUrl($result->ResponseDetail->QrCode)
+            ->setS2pCriptoWalletAddress($result->ResponseDetail->WalletAddress)
+            ->setS2pCriptoSymbol($result->ResponseDetail->Symbol)
+            ->setS2pCriptoAmount($AmountCripto);
 
         return $this;
     }

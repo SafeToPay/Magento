@@ -16,7 +16,7 @@
             <action method="addItem"><type>js_css</type><name>prototype/windows/themes/default.css</name></action>
             <action method="addCss"><name>lib/prototype/windows/themes/magento.css</name></action>
             <action method="addCss"><name>s2p/css/styles.css</name></action>
-            <action method="addJs"><script>s2p/s2p.js</script></action>
+            <action method="addJs"><script>s2p/konduto.js</script></action>
         </reference>
     </s2p_info_handle>
 

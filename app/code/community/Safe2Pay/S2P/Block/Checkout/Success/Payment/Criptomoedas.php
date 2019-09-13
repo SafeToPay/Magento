@@ -11,4 +11,23 @@ class Safe2Pay_S2P_Block_Checkout_Success_Payment_Criptomoedas extends Safe2Pay_
     {
         return $this->getPayment()->getS2pUrl();
     }
+
+    public function getCriptoAmount()
+    {
+        return $this->getPayment()->getS2pCriptoAmount();
+    }
+
+    public function getCriptoSymbol()
+    {
+        return $this->getPayment()->getS2pCriptoSymbol();
+    }
+
+    public function getCriptoWalletAddress()
+    {
+        return $this->getPayment()->getS2pCriptoWalletAddress();
+    }
+
+
+
+    
 }

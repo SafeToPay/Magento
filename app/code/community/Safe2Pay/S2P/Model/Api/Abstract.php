@@ -20,13 +20,6 @@ class Safe2Pay_S2P_Model_Api_Abstract
         $this->_mode = Mage::helper('s2p')->getMode();
     }
 
-
-    //public function setApiToken($token)
-    //{
-    //    $this->_apiToken = $token;
-    //    return $this;
-    //}
-
     public function getApiToken()
     {
         if (!$this->_apiToken) {
@@ -63,7 +56,6 @@ class Safe2Pay_S2P_Model_Api_Abstract
         if (in_array($method, array(Zend_Http_Client::POST, Zend_Http_Client::PUT, Zend_Http_Client::DELETE))) 
         {
             $json = Mage::helper('core')->jsonEncode($data);
-
             $client->setRawData($json, 'application/json');
         } 
         else 
@@ -75,17 +67,9 @@ class Safe2Pay_S2P_Model_Api_Abstract
         $responseBody = $response->getBody();
         $body = json_decode($responseBody);
 
-        //$result = $this->_parseObject($body);
         return $body;
     }
 
-    /**
-     * Retrieve base URL
-     *
-     * @return string
-     */
-    
-    
      public function getPaymentBaseUrl()
     {
         $url = self::PAYMENT_ENDPOINT . '/v' . self::VERSION;
@@ -98,14 +82,6 @@ class Safe2Pay_S2P_Model_Api_Abstract
         return $url;
     }
 
-
-
-    /**
-     * Convert an Array to Varien_Object
-     *
-     * @param array
-     * @return Varien_Object
-     */
     protected function _parseObject(array $data)
     {
         $object = new Varien_Object();
@@ -135,12 +111,6 @@ class Safe2Pay_S2P_Model_Api_Abstract
         return $object;
     }
 
-    /**
-     * Convert a Varien_Object to Array
-     *
-     * @param Varien_Object
-     * @return array
-     */
     protected function _parseArray(Varien_Object $object)
     {
         $array = array();
@@ -164,12 +134,6 @@ class Safe2Pay_S2P_Model_Api_Abstract
         return $array;
     }
 
-    /**
-     * Check if array is associative or sequential
-     *
-     * @param array $array
-     * @return bool
-     */
     protected function _isAssoc($array) {
         return (bool)count(array_filter(array_keys($array), 'is_string'));
     }

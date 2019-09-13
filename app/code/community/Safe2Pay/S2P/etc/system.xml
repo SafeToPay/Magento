@@ -26,7 +26,8 @@
                     ]]></comment>
                     <fields>
                         <mode translate="label">
-                            <label>Mode</label>
+                            <label>Ambiente</label>
+                            <tooltip>Escolha o ambiente que a sua loja está operando</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>s2p/source_mode</source_model>
                             <sort_order>10</sort_order>
@@ -36,6 +37,7 @@
                         </mode>
                         <token_test translate="label">
                             <label>Token Sandbox</label>
+                            <tooltip>Informe o Token de Sandbox</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
@@ -47,6 +49,7 @@
                         </token_test>
                         <token_live translate="label">
                             <label>Token</label>
+                            <tooltip>Informe o Token de Produção</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
@@ -59,6 +62,7 @@
 
                         <secret_key_test translate="label">
                             <label>Secret Key Sandbox</label>
+                            <tooltip>Informe a Secret de Sandbox</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>40</sort_order>
                             <show_in_default>1</show_in_default>
@@ -70,6 +74,7 @@
                         </secret_key_test>
                         <secret_key_live translate="label">
                             <label>Secret Key</label>
+                            <tooltip>Informe a Secret de Produção</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
@@ -129,16 +134,40 @@
                         </order_status>
                         <instructions translate="label">
                             <label>Instruções</label>
+                            <tooltip>Instruções que serão impressas no boleto bancário</tooltip>
                             <frontend_type>textarea</frontend_type>
                             <sort_order>40</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </instructions>
+
+                        <due_days translate="label">
+                            <label>Dias até o vencimento</label>
+                            <tooltip>Quantidade de dias a partir de data atual para vencimento do boleto</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                        </due_days>
+
+                        <pay_after_due translate="label">
+                            <label>Pagável após o vencimento</label>
+                            <tooltip>Indica se o boleto pode ser pago mesmo vencido</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </pay_after_due>
+
                         <sort_order translate="label">
                             <label>Ordenação</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>110</sort_order>
+                            <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -186,6 +215,7 @@
                         </order_status>
                         <max_installments translate="label">
                             <label>Número máximo de parcelas</label>
+                            <tooltip>Quantidade máxima que a compra pode ser parcelada</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>s2p/source_installment</source_model>
                             <sort_order>50</sort_order>
@@ -195,6 +225,7 @@
                         </max_installments>
                         <min_installment_value translate="label">
                             <label>Parcela mínima</label>
+                            <tooltip>Valor mínimo de cada parcela</tooltip>
                             <frontend_type>text</frontend_type>
                             <validate>required-entry validate-number</validate>
                             <sort_order>60</sort_order>
@@ -224,11 +255,57 @@
                 </s2p_cc>
 
 
+<s2p_debito translate="label" module="s2p">
+                    <label>Safe2Pay - Cartão de Débito</label>
+                    <sort_order>203</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <comment><![CDATA[<a href="https://safe2pay.com.br/solucoes/pagamentos/cartao-de-debito" target="_blank"><img src="data:image/png;base64,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" title="S2P" alt="S2P" width="50" /></a><br />]]></comment>
+                    <fields>
+                        <active translate="label">
+                            <label>Habilitado</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </active>
+                        <title translate="label">
+                            <label>Título</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <order_status translate="label">
+                            <label>Status de um novo pedido</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_order_status_new</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </order_status>
+
+                        <sort_order translate="label">
+                            <label>Ordenação</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <frontend_class>validate-number</frontend_class>
+                        </sort_order>
+                    </fields>
+                </s2p_debito>
 
 
 <s2p_criptomoedas translate="label" module="s2p">
                     <label>Safe2Pay - Criptomoedas</label>
-                    <sort_order>203</sort_order>
+                    <sort_order>204</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>

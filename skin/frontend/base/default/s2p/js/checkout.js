@@ -68,16 +68,16 @@ else
 							}.bind(this));
 					} else if (this.currentMethod == 's2p_boleto') {
 						if($("tipo_fisica").checked) {
-							if(!valida_cpf($("s2p_boleto_cpf_cnpj").value)) {
+							if(!valida_cpf($("s2p_customer_identity").value)) {
 								alert("CPF inválido");
-								Form.Element.select($("s2p_boleto_cpf_cnpj"));
+								Form.Element.select($("s2p_customer_identity"));
 							  return;
 							}
 						}
 						else if($("tipo_juridica").checked) {
-							if(!valida_cnpj($("s2p_boleto_cpf_cnpj").value)) {
+							if(!valida_cnpj($("s2p_customer_identity").value)) {
 								alert("CNPJ inválido");
-							  Form.Element.select($("s2p_boleto_cpf_cnpj"));
+							  Form.Element.select($("s2p_customer_identity"));
 							  return;
 						  }
 						}

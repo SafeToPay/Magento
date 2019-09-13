@@ -20,6 +20,12 @@ class Safe2Pay_S2P_Block_Payment_Method_List extends Mage_Core_Block_Template
         return $this->getUrl('s2p/payment_method/new');
     }
 
+    public function getDeletePaymentMethodUrl()
+    {
+        return $this->getUrl('s2p/payment_method/delete');
+    }
+
+
     public function getBackUrl()
     {
         if ($this->getRefererUrl()) {
@@ -30,18 +36,21 @@ class Safe2Pay_S2P_Block_Payment_Method_List extends Mage_Core_Block_Template
 
     public function getItems()
     {
-        if (is_null($this->_items)) {
-            $customer = $this->_getSession()->getCustomer();
-            if ($customer->getS2pCustomerId()) {
-                $result = Mage::getSingleton('s2p/api')->getPaymentMethodList($customer->getS2pCustomerId());
-                if ($result->getItems()) {
-                    $this->_items = $result->getItems();
-                }
+        if (is_null($this->_items)) 
+        {
+            $customerId = Mage::helper('s2p')->getCustomerId();
+
+            $lista = Mage::helper('s2p')->getListCardToken($customerId);
+
+            if ($lista) {
+                $this->_items = $lista;
             }
+
             if (!$this->_items) {
                 $this->_items = array();
             }
         }
+
         return $this->_items;
     }
 
@@ -49,4 +58,6 @@ class Safe2Pay_S2P_Block_Payment_Method_List extends Mage_Core_Block_Template
     {
         return Mage::getSingleton('customer/session');
     }
+
+    
 }

@@ -9,7 +9,6 @@ class Safe2Pay_S2P_Model_Observer
 {
     public function addJs(Varien_Event_Observer $observer)
     {
-        /** @var $block Mage_Core_Block_Abstract */
         $block = $observer->getEvent()->getBlock();
         $blockType = $block->getType();
         $targetBlocks = array(
@@ -17,7 +16,6 @@ class Safe2Pay_S2P_Model_Observer
             'aw_onestepcheckout/onestep_form_paymentmethod',
         );
         if (in_array($blockType, $targetBlocks) && Mage::getStoreConfig('payment/s2p_cc/active')) {
-            /** @var $transport Varien_Object */
             $transport = $observer->getEvent()->getTransport();
             $html = $transport->getHtml();
             $preHtml = $block->getLayout()
@@ -30,10 +28,8 @@ class Safe2Pay_S2P_Model_Observer
 
     public function addTotal(Varien_Event_Observer $observer)
     {
-        /** @var $block Mage_Core_Block_Abstract */
         $block = $observer->getEvent()->getBlock();
         if ($block instanceof Mage_Checkout_Block_Onepage_Review_Info) {
-            /** @var $transport Varien_Object */
             $transport = $observer->getEvent()->getTransport();
             $reviewHtml = $transport->getHtml();
             $totalHtml = $block->getLayout()

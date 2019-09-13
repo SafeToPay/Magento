@@ -32,9 +32,8 @@ class Safe2Pay_S2P_Adminhtml_S2P_InvoiceController extends Mage_Adminhtml_Contro
     {
         $this->loadLayout();
         
-        
         $blockType = $invoice->getBankSlip() ? 'boleto' : 'cc';
-        
+
         $block = $this->getLayout()->createBlock('s2p/adminhtml_invoice_view_'. $blockType);
         
         $block->setInvoice($invoice);

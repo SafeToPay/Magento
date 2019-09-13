@@ -73,6 +73,16 @@
                     <block>s2p/checkout_success_payment_boleto</block>
                     <template>s2p/checkout/success/payment/boleto.phtml</template>
                 </action>
+                <action method="addPaymentRender">
+                    <type>s2p_debito</type>
+                    <block>s2p/checkout_success_payment_debito</block>
+                    <template>s2p/checkout/success/payment/debito.phtml</template>
+                </action>
+                <action method="addPaymentRender">
+                    <type>s2p_criptomoedas</type>
+                    <block>s2p/checkout_success_payment_criptomoedas</block>
+                    <template>s2p/checkout/success/payment/criptomoedas.phtml</template>
+                </action>
             </block>
         </reference>
     </s2p_checkout_success_handle>
@@ -85,7 +95,7 @@
         <update handle="s2p_checkout_success_handle"/>
     </onepagecheckout_index_success>
 
-<!--
+
     <customer_account>
         <reference name="customer_account_navigation">
             <action method="addLink" ifconfig="payment/s2p_cc/active" translate="label" module="s2p">
@@ -94,7 +104,7 @@
                 <label>Meus Cartões de Crédito</label>
             </action>
         </reference>
-    </customer_account>-->
+    </customer_account>
 
 
     <s2p_payment_method_index translate="label">
@@ -108,11 +118,11 @@
         <reference name="my.account.wrapper">
             <block type="s2p/payment_method_list" name="s2p_payment_method_list" template="s2p/payment/method/list.phtml"/>
         </reference>
-        <!--<reference name="root">
+        <reference name="root">
             <action method="setHeaderTitle" translate="title" module="s2p">
                 <title>Meus Cartões de Crédito</title>
             </action>
-        </reference>-->
+        </reference>
     </s2p_payment_method_index>
 
     <s2p_payment_method_new>

@@ -19,21 +19,41 @@
         <col width="1" />
         <thead>
             <tr>
-                <th><?php echo Mage::helper('s2p')->__('Tipo') ?></th>
-                <th><?php echo Mage::helper('s2p')->__('Número do Cartão') ?></th>
-                <th><?php echo Mage::helper('s2p')->__('Incluído em') ?></th>
+                <th></th>
+                <th>Número do Cartão</th>
+                <!-- <th>Bandeira</th> -->
+                <th>Modalidade</th>
                 <th>&nbsp;</th>
             </tr>
         </thead>
         <tbody>
-        <?php foreach ($_items as $_item): ?>
-            <?php $_paymentInfo = $_item->getData('data'); ?>
+        <?php foreach ($_items as $row): ?>
+
+            <!-- <?php $maskedCC = $row[2] ?> -->
+
+
             <tr>
-                <td><span class="nobr"><?php echo $_paymentInfo->getDisplayNumber() ?></span></td>
-                <td><?php echo Mage::getModel('core/date')->date('d/m/Y', $_item->getDescription()) ?></td>
+                <td class="a-center">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAAHdElNRQfjCQwDJAt/vpgyAAAAoklEQVQ4y82TMQ6CYAyFv5/8mwsDTpq4unsnmOAUnkAnDsAhZHRndyWBCUaYGOry66SmHUhshybNa957TQtrhyOmYKdE91ygRgxZw0Kl1lOxRHgm9cCEj+ymhZFWiT6QOMTGYJa0/gAIpRpbIn/owYd6ZAO0jJxCZ+bxy3SDIKTwvsvms+kXw5ktcAey0Bm+iTKet/WBbo6YnL2SoeNq3ao9niymVG1aL5XjAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE5LTA5LTEyVDAzOjM2OjExKzAwOjAwSbwfUAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOS0wOS0xMlQwMzozNjoxMSswMDowMDjhp+wAAAAZdEVYdFNvZnR3YXJlAHd3dy5pbmtzY2FwZS5vcmeb7jwaAAAAAElFTkSuQmCC">
+                </td>
+                <td>
+                    <span class="nobr">
+                        <?php echo $row[card_masked_number] ?>
+                    </span>
+                </td>
+                <!-- <td>
+                    <span class="nobr">
+                        Mastercard
+                    </span>
+                </td> -->
+                <td>
+                    <span class="nobr">
+                        Crédito
+                    </span>
+                </td>
                 <td class="a-center">
                     <span class="nobr">
-                        <a class="btn-remove btn-remove2" title="<?php echo $this->__('Excluir esse Cartão') ?>" href="#" onclick="return deletePaymentMethod('<?php echo $this->getUrl('*/*/delete', array('id' => $_item->getId())) ?>');"><?php echo $this->__('Excluir esse Cartão') ?></a>
+                        <a onclick="deletePaymentMethod('<?php echo $this->escapeUrl($this->getDeletePaymentMethodUrl() . '?id=' . $row[customer_card_id] ) ?>')" href="#">Excluir</a>
                     </span>
                 </td>
             </tr>

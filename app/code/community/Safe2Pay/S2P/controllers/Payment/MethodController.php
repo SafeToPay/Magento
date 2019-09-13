@@ -8,11 +8,6 @@
 
 class Safe2Pay_S2P_Payment_MethodController extends Mage_Core_Controller_Front_Action
 {
-    /**
-     * Action predispatch
-     *
-     * Check customer authentication for some actions
-     */
     public function preDispatch()
     {
         parent::preDispatch();
@@ -29,9 +24,9 @@ class Safe2Pay_S2P_Payment_MethodController extends Mage_Core_Controller_Front_A
         if ($block = $this->getLayout()->getBlock('s2p_payment_method_list')) {
             $block->setRefererUrl($this->_getRefererUrl());
         }
-        //if ($headBlock = $this->getLayout()->getBlock('head')) {
-        //    $headBlock->setTitle(Mage::helper('s2p')->__('Meus Cartões de Crédito'));
-        //}
+        if ($headBlock = $this->getLayout()->getBlock('head')) {
+            $headBlock->setTitle(Mage::helper('s2p')->__('Meus Cartões de Crédito'));
+        }
         $this->renderLayout();
     }
 
@@ -48,43 +43,37 @@ class Safe2Pay_S2P_Payment_MethodController extends Mage_Core_Controller_Front_A
 
     public function saveAction()
     {
-        $data = new Varien_Object($this->getRequest()->getParam('payment', array()));
-        $data->setCustomerId(Mage::helper('s2p')->getCustomerId());
-        $data->setDescription(Mage::getModel('core/date')->timestamp(time()));
-     
-        
+        $request = new Varien_Object($this->getRequest()->getParam('payment', array()));
 
-        
+        $credit_card =  (object) ['Holder' => $request->s2p_card_holder,
+                                  'CardNumber' => $request->s2p_card_number,
+                                  'ExpirationDate' => str_pad($request->s2p_card_expiration_month, 2, "0", STR_PAD_LEFT) . '/' . $request->s2p_card_expiration_year,
+                                  'SecurityCode' => $request->s2p_card_verification];
 
-        Mage::getSingleton('customer/session')->addSuccess(Mage::helper('s2p')->__('O seu cartão foi salvo com sucesso.'));
-
-
-
-
-        //$result = Mage::getSingleton('s2p/api')->savePaymentMethod($data);
-        
-        //if ($result->getErrors()) {
-        //    Mage::getSingleton('customer/session')->addError($this->__('An error occurred while saving the credit card.'));
-        //} else {
-         //   Mage::getSingleton('customer/session')->addSuccess(Mage::helper('s2p')->__('Credit card has been saved.'));
-        //}
+        Mage::helper('s2p')->tokenize($credit_card, true);
 
         $this->_redirect('*/*/');
     }
 
     public function deleteAction()
     {
-        if ($paymentMethodId = $this->getRequest()->getParam('id')) {
+        if ($paymentMethodId = $this->getRequest()->getParam('id')) 
+        {
             $customerId = Mage::helper('s2p')->getCustomerId();
-            $result = Mage::getSingleton('s2p/api')->deletePaymentMethod($customerId, $paymentMethodId);
-            if ($result->getErrors()) {
-                Mage::getSingleton('customer/session')->addError($this->__('An error occurred while deleting the credit card.'));
-            } else {
-                Mage::getSingleton('customer/session')->addSuccess(Mage::helper('s2p')->__('Credit card has been deleted.'));
-            }
-        } else {
-            Mage::getSingleton('customer/session')->addSuccess(Mage::helper('s2p')->__('Unable to find a credit card to delete.'));
+
+            Mage::helper('s2p')->deleteToken($paymentMethodId, $customerId);
+
+
+            Mage::getSingleton('customer/session')->addSuccess(Mage::helper('s2p')->__('O cartão foi excluído com sucesso!'));
         }
+        else
+        {
+            Mage::getSingleton('customer/session')->addSuccess(Mage::helper('s2p')->__('Não foi possível encontrar o cartão a ser deletado.'));
+        }
+
         $this->_redirect('*/*/');
     }
+
+
+    
 }

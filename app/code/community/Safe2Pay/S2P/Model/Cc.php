@@ -34,13 +34,18 @@ class Safe2Pay_S2P_Model_Cc extends Mage_Payment_Model_Method_Abstract
             ->setS2pCustomerPaymentMethodId($data->getS2pCustomerPaymentMethodId())
             
             ->setS2pSave($data->getS2pSave())
-            ->setS2pBoletoCpfCnpj($data->getS2pBoletoCpfCnpj())
+            ->setS2pCustomerIdentity($data->getS2pCustomerIdentity())
 
-            ->setS2pCreditHolder($data->getS2pCreditHolder())
-            ->setS2pCreditNumber($data->getS2pCreditNumber())
-            ->setS2pCreditExpirationMonth($data->getS2pCreditExpirationMonth())
-            ->setS2pCreditExpirationYear($data->getS2pCreditExpirationYear())
-            ->setS2pCreditVerification($data->getS2pCreditVerification());
+
+            ->setS2pKdtVisitor($data->getS2pKdtVisitor())
+            
+
+
+            ->setS2pCardHolder($data->getS2pCardHolder())
+            ->setS2pCardNumber($data->getS2pCardNumber())
+            ->setS2pCardExpirationMonth($data->getS2pCardExpirationMonth())
+            ->setS2pCardExpirationYear($data->getS2pCardExpirationYear())
+            ->setS2pCardVerification($data->getS2pCardVerification());
 
         return $this;
     }
@@ -66,9 +71,14 @@ class Safe2Pay_S2P_Model_Cc extends Mage_Payment_Model_Method_Abstract
                              'StateInitials' => $order->getBillingAddress()->getRegionCode(),
                              'CountryName' => 'Brasil'];
 
+        $customer_session = Mage::getSingleton('customer/session')->getCustomer();
+        $customer_registry = Mage::getModel('customer/customer')->load($customer_session->getId());
+        $identity = $customer_registry->getData('taxvat');
+
         $customer = (object) ['Name' => $order->getCustomerName(),
-                              'Identity' => Zend_Filter::filterStatic($payment->getS2pBoletoCpfCnpj(), 'Digits'),
+                              'Identity' => Zend_Filter::filterStatic($identity, 'Digits'),
                               'Email' => $order->getCustomerEmail(),
+                              'Phone' => Zend_Filter::filterStatic($order->getBillingAddress()->getTelephone(), 'Digits'),
                               'Address' => $address];
 
         $products =  array(); 
@@ -84,7 +94,6 @@ class Safe2Pay_S2P_Model_Cc extends Mage_Payment_Model_Method_Abstract
             $products[] = $prod;
         }
 
-         // Shipping
          if ($order->getBaseShippingAmount() > 0) 
          {
              $shipping = (object) ['Code' => '1',
@@ -95,34 +104,54 @@ class Safe2Pay_S2P_Model_Cc extends Mage_Payment_Model_Method_Abstract
              $products[] = $shipping;
          }
 
-         // Verify if needs add interest
         $interestRate = $this->getInterestRate($payment->getInstallments());
         $totalWithInterest = $this->calcTotalWithInterest($amount, $interestRate);
 
         if ($totalWithInterest - $amount > 0) 
         {
             $interest = (object) ['Code' => '1',
-                                 'Description' => Mage::helper('s2p')->__('Interest'),
-                                 'Quantity' => 1,
-                                 'UnitPrice' => $totalWithInterest - $amount];
+                                  'Description' => Mage::helper('s2p')->__('Interest'),
+                                  'Quantity' => 1,
+                                  'UnitPrice' => $totalWithInterest - $amount];
 
             $products[] = $interest;
         }
 
+        $one_click_checkout = false;
 
-        $credit_card =  (object) ['Holder' => $payment->getS2pCreditHolder(),
-                                  'CardNumber' => $payment->getS2pCreditNumber(),
-                                  'ExpirationDate' => str_pad($payment->getS2pCreditExpirationMonth(), 2, "0", STR_PAD_LEFT) . '/' . $payment->getS2pCreditExpirationYear(),
-                                  'SecurityCode' => $payment->getS2pCreditVerification(),
-                                  'InstallmentQuantity' => $payment->getInstallments()];
+        if ($payment->getS2pCustomerPaymentMethodId() > 0)
+        {
+            $one_click_checkout = true;
+
+            $customerId = Mage::helper('s2p')->getCustomerId();
+
+        
+            $token = Mage::helper('s2p')->getCardToken($payment->getS2pCustomerPaymentMethodId(), $customerId);
+
+            $credit_card =  (object) ['Token' => $token,
+                                      'SecurityCode' => $payment->getS2pCardVerification(),
+                                      'InstallmentQuantity' => $payment->getInstallments()];
+        }
+        else
+        {
+            $one_click_checkout = false;
+
+            $credit_card =  (object) ['Holder' => $payment->getS2pCardHolder(),
+                                      'CardNumber' => $payment->getS2pCardNumber(),
+                                      'ExpirationDate' => str_pad($payment->getS2pCardExpirationMonth(), 2, "0", STR_PAD_LEFT) . '/' . $payment->getS2pCardExpirationYear(),
+                                      'SecurityCode' => $payment->getS2pCardVerification(),
+                                      'InstallmentQuantity' => $payment->getInstallments()];
+        }
+
 
         $transaction = (object) ['Application' => 'Magento ' . Mage::getVersion(),
-                                 'Reference' => $order->getId(),
+                                 'Reference' => $order->getIncrementId(),
                                  'IsSandbox' => Mage::helper('s2p')->getMode() == "test" ? true : false,
-                                 'CallbackUrl' => Mage::getUrl('s2p/callback'),
+                                 'CallbackUrl' => Mage::app()->getStore(0)->getBaseUrl().'s2p/notification/notify/',
                                  'Customer' => $customer,
                                  'PaymentMethod' => $paymentMethod,
                                  'Products' => $products,
+                                 'VisitorID' => $payment->getS2pKdtVisitor(),
                                  'PaymentObject' => $credit_card];
 
         $result = Mage::getSingleton('s2p/api')->checkout($transaction);
@@ -135,13 +164,16 @@ class Safe2Pay_S2P_Model_Cc extends Mage_Payment_Model_Method_Abstract
         
         if ($result->ResponseDetail->Status == 3)
         {
-            if ($payment->getS2pSave())
+            if ($payment->getS2pSave() && !$one_click_checkout)
             {
-                //$tokenize = Mage::getSingleton('s2p/api')->tokenize($credit_card);
+                $customer_card_id = Mage::helper('s2p')->tokenize($credit_card, false);
+
+                $payment->setS2pCustomerPaymentMethodId($customer_card_id);    
             }
     
             // Set s2p info
-            $payment->setSafe2payTransactionId($result->ResponseDetail->IdTransaction)
+            $payment->setS2pTransactionId($result->ResponseDetail->IdTransaction)
+                ->setS2pPaymentMethod(2)
                 ->setS2pTotalWithInterest($totalWithInterest)
                 ->setTransactionId($result->ResponseDetail->IdTransaction)
                 ->setIsTransactionClosed(0)
@@ -149,6 +181,10 @@ class Safe2Pay_S2P_Model_Cc extends Mage_Payment_Model_Method_Abstract
         }
         else
         {
+            $payment->setS2pTransactionId($result->ResponseDetail->IdTransaction)
+                ->setS2pPaymentMethod(2)
+                ->setTransactionId($result->ResponseDetail->IdTransaction);
+
             Mage::throwException($result->ResponseDetail->Description);
         }
 
@@ -247,12 +283,6 @@ class Safe2Pay_S2P_Model_Cc extends Mage_Payment_Model_Method_Abstract
         return (float)$interestRate/100;
     }
 
-    /**
-     * @param float $amount
-     * @param int $installments
-     * @param float $rate
-     * @return float
-     */
     public function calcInstallmentAmount($amount, $installments, $rate = 0.0)
     {
         if ($rate > 0){
@@ -263,11 +293,6 @@ class Safe2Pay_S2P_Model_Cc extends Mage_Payment_Model_Method_Abstract
         return round($result, 2);
     }
 
-    /**
-     * @param float $amount
-     * @param float $rate
-     * @return float
-     */
     public function calcTotalWithInterest($amount, $rate = 0.0)
     {
         return $amount + ($amount * $rate);

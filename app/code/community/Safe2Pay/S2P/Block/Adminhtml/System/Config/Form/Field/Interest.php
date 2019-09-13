@@ -10,12 +10,12 @@ class Safe2Pay_S2P_Block_Adminhtml_System_Config_Form_Field_Interest
     public function __construct()
     {
         $this->addColumn('installments', array(
-            'label' => Mage::helper('s2p')->__('Up To'),
+            'label' => Mage::helper('s2p')->__('Qtd. de Parcelas'),
             'style' => 'width:120px',
         ));
 
         $this->addColumn('interest', array(
-            'label' => Mage::helper('s2p')->__('Interest Rate'),
+            'label' => Mage::helper('s2p')->__('Taxa de Juros (a.m.)'),
             'style' => 'width:120px',
         ));
 

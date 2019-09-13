@@ -18,7 +18,7 @@ class Safe2Pay_S2P_Block_Info_Boleto extends Mage_Payment_Block_Info
      */
     public function getInvoiceId()
     {
-        return $this->getInfo()->getSafe2payTransactionId();
+        return $this->getInfo()->getS2pTransactionId();
     }
 
    /**
@@ -26,6 +26,6 @@ class Safe2Pay_S2P_Block_Info_Boleto extends Mage_Payment_Block_Info
      */
     public function getInvoiceUrl()
     {
-        return $this->getInfo()->getS2pPdf();
+        return $this->getInfo()->getS2pUrl();
     }
 }

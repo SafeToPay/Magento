@@ -1,34 +1,16 @@
 <?php
 /**
- *
- * @category   Safe2Pay
- * @package    Safe2Pay_S2P
- * @author     Suporte <integracao@safe2pay.com.br>
+ * @category    Safe2Pay
+ * @package     Safe2Pay_S2P
+ * @copyright   Copyright (c) 2014 Safe2Pay. (https://safe2pay.com.br)
  */
-class Safe2Pay_S2P_Block_Payment_Method_Form extends Mage_Core_Block_Template
+class Safe2Pay_S2P_Block_Form_Debito extends Mage_Payment_Block_Form
 {
-    protected $_method;
-    protected $_paymentMethod;
-
     protected function _construct()
     {
         parent::_construct();
-        $this->setTemplate('s2p/payment_method/form.phtml');
+        $this->setTemplate('s2p/form/debito.phtml');
     }
-
-    public function getTitle()
-    {
-        if ($title = $this->getData('title')) {
-            return $title;
-        }
-        
-        $title = Mage::helper('s2p')->__('Incluir Cartão de Crédito');
-
-        return $title;
-    }
-
-   
-
 
     public function getCcMonths()
     {
@@ -52,15 +34,5 @@ class Safe2Pay_S2P_Block_Payment_Method_Form extends Mage_Core_Block_Template
             $this->setData('cc_years', $years);
         }
         return $years;
-    }
-
-    public function getSavePaymentMethodUrl()
-    {
-        return $this->getUrl('s2p/payment_method/save');
-    }
-
-    public function getBackUrl()
-    {
-        return $this->getUrl('s2p/payment_method');
     }
 }

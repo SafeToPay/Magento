@@ -8,96 +8,119 @@
 <?php $_code=$this->getMethodCode() ?>
 
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
+
+    <!-- <li>
+        <div class="input-box s2p-credito-tipo-pessoa">
+            <label for="credito_tipo_fisica"><input type="radio" name="credito_tipo_pessoa" id="credito_tipo_fisica" checked> Pessoa física</label>
+            <label for="credito_tipo_juridica"><input type="radio" name="credito_tipo_pessoa" id="credito_tipo_juridica"> Pessoa jurídica</label>
+        </div>
+    </li> -->
+    <!-- <li id="s2p-identity-box">
+        <label for="<?php echo $_code ?>_cpf_cnpj" id="label-s2p-credito-tipo-pessoa" class="required"><em>*</em><?php echo $this->__('CPF do comprador') ?></label>
+        <div class="input-box">
+            <input type="text" id="<?php echo $_code ?>_cpf_cnpj" name="payment[s2p_customer_identity]" title="<?php echo $this->__('CPF do comprador') ?>" class="input-text required-entry" autocomplete="off" />
+        </div>
+    </li>
+ -->
+
+
+    <li style="display:none;">
+        <input type="hidden" id="<?php echo $_code ?>_kdt" name="payment[s2p_kdt_visitor]" value="" />
+    </li>
+
+    <li id="s2p-installments-box">
+            <label for="<?php echo $_code ?>_installments" class="required"><em>*</em><?php echo $this->__('Parcelamento') ?></label>
+            <div class="input-box">
+                <select id="<?php echo $_code ?>_installments" name="payment[installments]" title="<?php echo $this->__('Parcelamento') ?>" class="required-entry validate-select">
+                    <option value=""><?php echo $this->__('--Selecione--') ?></option>
+                    <?php $_installments = $this->getInfoData('installments') ?>
+                    <?php $_installmentsAvailables = $this->getInstallmentsAvailables() ?>
+                    <?php foreach ($_installmentsAvailables as $_installmentValue => $_installmentLabel): ?>
+                        <option value="<?php echo $_installmentValue ?>"<?php if($_installmentValue==$_installments): ?> selected="selected"<?php endif ?>><?php echo $_installmentLabel ?></option>
+                    <?php endforeach ?>
+                </select>
+                <input type="hidden" id="<?php echo $_code ?>_installment_description" name="payment[installment_description]" value="<?php echo $this->escapeHtml($this->getInfoData('installment_description')) ?>" />
+            </div>
+    </li>
+
+
     <?php if ($_creditCards = $this->getCreditCards()): ?>
         <li id="s2p-credit-cards-box">
-            <label for="<?php echo $_code ?>_customer_payment_method_id"><?php echo $this->__('Credit Card') ?></label>
+            <label for="<?php echo $_code ?>_customer_payment_method_id"><?php echo $this->__('Cartão de Crédito') ?></label>
             <div class="input-box">
-                <select id="<?php echo $_code ?>_s2p_customer_payment_method_id" name="payment[s2p_customer_payment_method_id]" title="<?php echo $this->__('Credit Card') ?>">
+
+
+                <select id="<?php echo $_code ?>_s2p_customer_payment_method_id" name="payment[s2p_customer_payment_method_id]" title="<?php echo $this->__('Cartão de Crédito') ?>">
                     <?php $_customerPaymentMethodId = $this->getInfoData('s2p_customer_payment_method_id') ?>
+                    
                     <?php foreach ($_creditCards as $_cc): ?>
-                        <option value="<?php echo $_cc->getId() ?>"<?php if($_cc->getId()==$_customerPaymentMethodId): ?> selected="selected"<?php endif ?> data-cc-type="<?php echo Mage::getSingleton('s2p/source_cctype')->getTypeByBrand($_cc->getBrand()) ?>"><?php echo $_cc->getBrand() ?> <?php echo $_cc->getDisplayNumber() ?></option>
+                        <option value="<?php echo $_cc[customer_card_id] ?>"<?php if($_cc[customer_card_id]==$_customerPaymentMethodId): ?> selected="selected"<?php endif ?> data-cc-type="MC"><?php echo $_cc[card_masked_number] ?></option>
                     <?php endforeach ?>
-                    <option value="" <?php if($_customerPaymentMethodId === ""): ?>selected="selected"<?php endif ?>><?php echo $this->__('New Credit Card') ?></option>
+                    
+                    <option value="" <?php if($_customerPaymentMethodId === ""): ?>selected="selected"<?php endif ?>><?php echo $this->__('Novo cartão de crédito') ?></option>
                 </select>
+
+
             </div>
         </li>
+
+        
         <script type="text/javascript">
+
+            $('<?php echo $_code ?>_kdt').value = window.visitorID;
+
             Event.observe($('<?php echo $_code ?>_s2p_customer_payment_method_id'), 'change', function() {
-                var typesContainer = $(this.id.substr(0,this.id.indexOf('_s2p_customer_payment_method_id')) + '_types');
-                if (this.value) {
+                
+                //var typesContainer = $(this.id.substr(0,this.id.indexOf('_s2p_customer_payment_method_id')) + '_types');
+                
+                if (this.value) 
+                {
                     $('payment_form_<?php echo $_code ?>').select('li').invoke('hide');
-                    var ccType = null;
-                    this.select('option').each(function(element) {
-                       if (element.selected) {
-                           ccType = element.readAttribute('data-cc-type');
-                       }
-                    });
-                    typesContainer.select('li').invoke('removeClassName', 'on');
-                    typesContainer.down('.' + ccType).addClassName('on');
-                } else {
+                    
+                    //var ccType = null;
+
+                    //this.select('option').each(function(element) {
+                    //   if (element.selected) {
+                    //       ccType = element.readAttribute('data-cc-type');
+                    //   }
+                    //});
+
+                    //typesContainer.select('li').invoke('removeClassName', 'on');
+                    //typesContainer.down('.' + ccType).addClassName('on');
+                } else 
+                {
                     $('payment_form_<?php echo $_code ?>').select('li').invoke('show');
-                    typesContainer.select('li').invoke('addClassName', 'on');
+                    //typesContainer.select('li').invoke('addClassName', 'on');
                 }
+
+                //$('s2p-identity-box').show();
                 $('s2p-credit-cards-box').show();
                 $('s2p-installments-box').show();
+                $('s2p-verification-box').show();
             });
             fireEvent($('<?php echo $_code ?>_s2p_customer_payment_method_id'), 'change');
         </script>
+
+
+
     <?php endif ?>
-    <li style="display: none;">
-        <input type="hidden" id="<?php echo $_code ?>_s2p_token" name="payment[s2p_token]" value="" />
-        <select id="<?php echo $_code ?>_cc_type" title="<?php echo $this->__('Credit Card Type') ?>" style="display: none;">
-            <option value=""><?php echo $this->__('--Please Select--') ?></option>
-            <?php foreach ($this->getCcAvailableTypes() as $_typeCode => $_typeName): ?>
-                <option value="<?php echo $_typeCode ?>"><?php echo $_typeName ?></option>
-            <?php endforeach ?>
-        </select>
-    </li>
+    
 
 
-<li>
-
-<div class="input-box s2p-credito-tipo-pessoa">
-    <label for="tipo_fisica"><input type="radio" name="tipo_pessoa" id="tipo_fisica" checked> Pessoa física</label>
-    <label for="tipo_juridica"><input type="radio" name="tipo_pessoa" id="tipo_juridica"> Pessoa jurídica</label>
-</div>
-
-</li>
-<li>
-<label for="<?php echo $_code ?>_cpf_cnpj" id="label-s2p-credito-tipo-pessoa" class="required"><em>*</em><?php echo $this->__('CPF do comprador') ?></label>
-<div class="input-box">
-    <input type="text" id="<?php echo $_code ?>_cpf_cnpj" name="payment[s2p_boleto_cpf_cnpj]" title="<?php echo $this->__('CPF do comprador') ?>" class="input-text required-entry" autocomplete="off" />
-</div>
-</li>
-
-
-    <li id="s2p-installments-box">
-        <label for="<?php echo $_code ?>_installments" class="required"><em>*</em><?php echo $this->__('Parcelamento') ?></label>
-        <div class="input-box">
-            <select id="<?php echo $_code ?>_installments" name="payment[installments]" title="<?php echo $this->__('Parcelamento') ?>" class="required-entry validate-select">
-                <option value=""><?php echo $this->__('--Selecione--') ?></option>
-                <?php $_installments = $this->getInfoData('installments') ?>
-                <?php $_installmentsAvailables = $this->getInstallmentsAvailables() ?>
-                <?php foreach ($_installmentsAvailables as $_installmentValue => $_installmentLabel): ?>
-                    <option value="<?php echo $_installmentValue ?>"<?php if($_installmentValue==$_installments): ?> selected="selected"<?php endif ?>><?php echo $_installmentLabel ?></option>
-                <?php endforeach ?>
-            </select>
-            <input type="hidden" id="<?php echo $_code ?>_installment_description" name="payment[installment_description]" value="<?php echo $this->escapeHtml($this->getInfoData('installment_description')) ?>" />
-        </div>
-    </li>
+    
 
 
     <li>
         <label for="<?php echo $_code ?>_cc_number" class="required"><em>*</em><?php echo $this->__('Número do cartão') ?></label>
         <div class="input-box">
-            <input name="payment[s2p_credit_number]" type="text" id="<?php echo $_code ?>_cc_number" title="<?php echo $this->__('Número do cartão') ?>" class="input-text s2p-only-number required-entry validate-s2p-cc-number" autocomplete="off" data-s2p="number" maxlength="19" value="" />
+            <input name="payment[s2p_card_number]" type="text" id="<?php echo $_code ?>_cc_number" title="<?php echo $this->__('Número do cartão') ?>" class="input-text s2p-only-number required-entry validate-s2p-cc-number" autocomplete="off" data-s2p="number" maxlength="19" value="" />
         </div>
     </li>
 
     <li>
         <label for="<?php echo $_code ?>_cc_owner" class="required"><em>*</em><?php echo $this->__('Nome do titular impresso no cartão') ?></label>
         <div class="input-box">
-            <input name="payment[s2p_credit_holder]" type="text" title="<?php echo $this->__('Nome do titular impresso no cartão') ?>" class="input-text required-entry" data-s2p="full_name" id="<?php echo $_code ?>_cc_owner" value="" />
+            <input name="payment[s2p_card_holder]" type="text" title="<?php echo $this->__('Nome do titular impresso no cartão') ?>" class="input-text required-entry" data-s2p="full_name" id="<?php echo $_code ?>_cc_owner" value="" />
         </div>
     </li>
 
@@ -106,7 +129,7 @@
         <label for="<?php echo $_code ?>_expiration" class="required"><em>*</em><?php echo $this->__('Validade do cartão') ?></label>
         <div class="input-box">
             <div class="v-fix s2p-cc-expr-month">
-                <select name="payment[s2p_credit_expiration_month]" id="<?php echo $_code ?>_expiration" class="month validate-s2p-cc-exp">
+                <select name="payment[s2p_card_expiration_month]" id="<?php echo $_code ?>_expiration" class="month validate-s2p-cc-exp">
                     <?php foreach ($this->getCcMonths() as $k=>$v): ?>
                         <option value="<?php echo $k?$k:'' ?>"><?php echo $v ?></option>
                     <?php endforeach ?>
@@ -114,7 +137,7 @@
             </div>
             <div class="v-fix s2p-cc-expr-year">
                 <span>/</span>
-                <select name="payment[s2p_credit_expiration_year]" id="<?php echo $_code ?>_expiration_yr" class="year">
+                <select name="payment[s2p_card_expiration_year]" id="<?php echo $_code ?>_expiration_yr" class="year">
                     <?php foreach ($this->getCcYears() as $k=>$v): ?>
                         <option value="<?php echo $k?$k:'' ?>"><?php echo $v ?></option>
                     <?php endforeach ?>
@@ -124,12 +147,12 @@
         </div>
     </li>
     <?php echo $this->getChildHtml() ?>
-    <?php if($this->hasVerification()): ?>
-        <li>
+
+    <li id="s2p-verification-box">
             <label for="<?php echo $_code ?>_cc_cid" class="required"><em>*</em><?php echo $this->__('Código de verificação (CVV)') ?></label>
             <div class="input-box">
                 <div class="v-fix s2p-cvv">
-                    <input name="payment[s2p_credit_verification]" type="text" id="<?php echo $_code ?>_cc_cid" title="<?php echo $this->__('Código de verificação (CVV)') ?>" class="input-text s2p-only-number cvv required-entry validate-s2p-cc-cvn" autocomplete="off" data-s2p="verification_value" maxlength="4" value="" />
+                    <input name="payment[s2p_card_verification]" type="text" id="<?php echo $_code ?>_cc_cid" title="<?php echo $this->__('Código de verificação (CVV)') ?>" class="input-text s2p-only-number cvv required-entry validate-s2p-cc-cvn" autocomplete="off" data-s2p="verification_value" maxlength="4" value="" />
                     <div class="s2p-cvv-tool-tip">
                         <img src="<?php echo $this->getSkinUrl('s2p/images/icon_cvv.gif') ?>" class="s2p-cvv-icon" />
                         <div class="s2p-cvv-image"><img src="<?php echo $this->getSkinUrl('s2p/images/cvv.gif') ?>" alt="<?php echo $this->__('Card Verification Number Visual Reference') ?>" title="<?php echo $this->__('Card Verification Number Visual Reference') ?>" /></div>
@@ -138,10 +161,10 @@
                 </div>
             </div>
         </li>
-    <?php endif; ?>
-    <!--<li class="control">
+
+    <li class="control">
         <input type="checkbox" name="payment[s2p_save]" id="<?php echo $_code ?>_save" value="1" <?php if($this->getInfoData('s2p_save')): ?> checked="checked"<?php endif; ?> title="<?php echo $this->__('Salvar cartão para compras futuras') ?>" class="checkbox" /><label for="<?php echo $_code ?>_save"><?php echo $this->__('Salvar cartão para compras futuras') ?></label>
-    </li>-->
+    </li>
 </ul>
 
 
@@ -151,41 +174,6 @@
 
 <script type="text/javascript">
     //<![CDATA[
-
-var cpf_cnpj_field = document.getElementById('<?php echo $_code ?>_cpf_cnpj');
-	var formatted = new Formatter(cpf_cnpj_field, { 'pattern': '{{999}}.{{999}}.{{999}}-{{99}}', 'persistent': false });
-
- $('tipo_fisica').observe('change', function() { 
-  	
-	  //$('label-s2p-boleto-nome').update("<?php echo $this->__('Nome do comprador') ?>");
-  	  $('label-s2p-credito-tipo-pessoa').update("<?php echo $this->__('CPF do comprador') ?>");
-  	
-	  //nome_empresa_field.value = ''; 
-  	  cpf_cnpj_field.value = ''; 
-  	  
-	  formatted.resetPattern('{{999}}.{{999}}.{{999}}-{{99}}');
-  });
-
-  $('tipo_juridica').observe('change', function() { 
-  	  //$('label-s2p-boleto-nome').update("<?php echo $this->__('Razão Social do comprador') ?>");
-  	  $('label-s2p-credito-tipo-pessoa').update("<?php echo $this->__('CNPJ do comprador') ?>");
-  	
-	  //nome_empresa_field.value = ''; 
-  	  cpf_cnpj_field.value = ''; 
-  	
-	  formatted.resetPattern('{{99}}.{{999}}.{{999}}/{{9999}}-{{99}}'); 
-	});
-
-  <?php echo 'var cpf_cnpj = "'.$this->getCpfCnpj().'";'; ?>
-  if(cpf_cnpj.length == 14)
-    $("tipo_fisica").click();
-  else if(cpf_cnpj.length == 18)
-	$("tipo_juridica").click();
-	
-  //$("<?php echo $_code ?>_name").value = nome_razaosocial;
-  $("<?php echo $_code ?>_cpf_cnpj").value = cpf_cnpj;
-
-
 
     Event.observe($('<?php echo $_code ?>_expiration'), 'change', function(){
         var month = ("0" + this.value).slice(-2);
@@ -199,42 +187,45 @@ var cpf_cnpj_field = document.getElementById('<?php echo $_code ?>_cpf_cnpj');
         $(this.id.substr(0,this.id.indexOf('_expiration')) + '_cc_expiration').value = month + '/' + year;
     });
 
-    Event.observe($('<?php echo $_code ?>_cc_number'), 'change', function(){
-        var skipChange = $(this.id.substr(0,this.id.indexOf('_cc_number')) + '_s2p_customer_payment_method_id')
-            && $(this.id.substr(0,this.id.indexOf('_cc_number')) + '_s2p_customer_payment_method_id').value != "";
-        if (skipChange) {
-            return;
-        }
 
-        var typesContainer = $(this.id.substr(0,this.id.indexOf('_cc_number')) + '_types');
-        var ccTypeContainer = $(this.id.substr(0,this.id.indexOf('_cc_number')) + '_cc_type');
-        var ccCidContainer = $(this.id.substr(0,this.id.indexOf('_cc_number')) + '_cc_cid');
-        var ccNumber = this.value;
-        var ccType;
 
-        if (ccNumber.length >= 6) {
-            Validation.creditCartTypes.each(function (pair) {
-                if (pair.value[3] && ccNumber.match(pair.value[3])) {
-                    ccType = pair.key;
-                    throw $break;
-                }
-            });
-        }
-        ccTypeContainer.value = ccType ? ccType : '';
+    // Event.observe($('<?php echo $_code ?>_cc_number'), 'change', function(){
+    //     var skipChange = $(this.id.substr(0,this.id.indexOf('_cc_number')) + '_s2p_customer_payment_method_id')
+    //         && $(this.id.substr(0,this.id.indexOf('_cc_number')) + '_s2p_customer_payment_method_id').value != "";
+    //     if (skipChange) {
+    //         return;
+    //     }
 
-        if (ccNumber) {
-            typesContainer.select('li').invoke('removeClassName', 'on');
-            if (ccType && ccType == ccTypeContainer.value) {
-                typesContainer.down('.' + ccType).addClassName('on');
-            }
-        } else {
-            typesContainer.select('li').invoke('addClassName', 'on');
-        }
+    //     //var typesContainer = $(this.id.substr(0,this.id.indexOf('_cc_number')) + '_types');
+    //     //var ccTypeContainer = $(this.id.substr(0,this.id.indexOf('_cc_number')) + '_cc_type');
+    //     // var ccCidContainer = $(this.id.substr(0,this.id.indexOf('_cc_number')) + '_cc_cid');
+    //     // var ccNumber = this.value;
+    //     // var ccType;
 
-        if (ccCidContainer.value) {
-            Validation.validate(ccCidContainer);
-        }
-    });
+    //     // if (ccNumber.length >= 6) {
+    //     //     Validation.creditCartTypes.each(function (pair) {
+    //     //         if (pair.value[3] && ccNumber.match(pair.value[3])) {
+    //     //             ccType = pair.key;
+    //     //             throw $break;
+    //     //         }
+    //     //     });
+    //     // }
+
+    //     //ccTypeContainer.value = ccType ? ccType : '';
+
+    //     /* if (ccNumber) {
+    //         typesContainer.select('li').invoke('removeClassName', 'on');
+    //         if (ccType && ccType == ccTypeContainer.value) {
+    //             typesContainer.down('.' + ccType).addClassName('on');
+    //         }
+    //     } else {
+    //         typesContainer.select('li').invoke('addClassName', 'on');
+    //     }
+
+    //     if (ccCidContainer.value) {
+    //         Validation.validate(ccCidContainer);
+    //     } */
+    // });
 
     Event.observe($('<?php echo $_code ?>_cc_number'), 'keyup', function(){
         fireEvent(this, 'change');
@@ -273,7 +264,7 @@ var cpf_cnpj_field = document.getElementById('<?php echo $_code ?>_cpf_cnpj');
             if(radio.value == '<?php echo $_code ?>') {
                 fireEvent($('<?php echo $_code ?>_cc_number'), 'change');
             } else {
-                $('<?php echo $_code ?>_types').select('li').invoke('addClassName', 'on');
+               // $('<?php echo $_code ?>_types').select('li').invoke('addClassName', 'on');
             }
         });
     });
