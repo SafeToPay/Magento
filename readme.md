@@ -33,7 +33,7 @@ Os clientes não necessitam sair da loja para finalizar a compra, ignorando form
 
 ## Requisitos
 - Magento versão 1x
-- Ter uma conta no Safe2Pay: https://safe2pay.com.br/
+- Ter uma conta no Safe2Pay: [Clique aqui](https://safe2pay.com.br/)
 
 
 ## Informações adicionais / Contato
