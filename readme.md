@@ -17,7 +17,7 @@ Transações de pagamento online devem ser rápidas e simples, sem asteriscos ou
 3. Navegue para Sistema > Configuração > Vendas > Formas de Pagamento e configure com os dados da sua conta no Safe2Pay.
 
 
-##  Uma experiência rápida e fácil e segura
+##  Uma experiência rápida,fácil e segura
 
 Quando os clientes usam o Safe2Pay estão contando com uma solução completa em pagamentos e 100% segura. O Safe2Pay possui anti-fraude permitindo que suas transações sejam sempre monitoradas ajudando a minimizar riscos e perdas por fraude, simplificando o processo de validação de transações.
 
