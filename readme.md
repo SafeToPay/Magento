@@ -25,6 +25,10 @@ Quando os clientes usam o Safe2Pay estão contando com uma solução completa em
 
 Os clientes não necessitam sair da loja para finalizar a compra, ignorando formulários on-line, concluindo a operação de forma simples e com alguns cliques, ajudando a aumentar sua conversão de vendas e reduzir o abandono do carrinho de compras.
 
+##  Compatibilidade
+
+A extensão do Safe2Pay é compatível com a versão 1 do Magento.
+
 ## Informações adicionais / Contato
 
 Em caso de dúvidas, ficamos à disposição em nossos canais ou diretamente pelo e-mail integracao@safe2pay.com.br. 
