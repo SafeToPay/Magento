@@ -39,3 +39,6 @@ Os clientes não necessitam sair da loja para finalizar a compra, ignorando form
 ## Informações adicionais / Contato
 
 Em caso de dúvidas, ficamos à disposição em nossos canais ou diretamente pelo e-mail integracao@safe2pay.com.br. 
+
+Para mais informações acesse: https://safe2pay.com.br
+
