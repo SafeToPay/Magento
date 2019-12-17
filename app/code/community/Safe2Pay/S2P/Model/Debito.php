@@ -114,6 +114,7 @@ class Safe2Pay_S2P_Model_Debito extends Mage_Payment_Model_Method_Abstract
                                  'Customer' => $customer,
                                  'PaymentMethod' => $paymentMethod,
                                  'Products' => $products,
+                                 'Amount' => $amount,
                                  'PaymentObject' => $debit_card];
 
         $result = Mage::getSingleton('s2p/api')->checkout($transaction);

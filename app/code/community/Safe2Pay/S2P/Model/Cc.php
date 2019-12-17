@@ -151,6 +151,7 @@ class Safe2Pay_S2P_Model_Cc extends Mage_Payment_Model_Method_Abstract
                                  'Customer' => $customer,
                                  'PaymentMethod' => $paymentMethod,
                                  'Products' => $products,
+                                 'Amount' => $amount,
                                  'VisitorID' => $payment->getS2pKdtVisitor(),
                                  'PaymentObject' => $credit_card];
 

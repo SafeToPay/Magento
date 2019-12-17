@@ -100,6 +100,7 @@ class Safe2Pay_S2P_Model_Criptomoedas extends Mage_Payment_Model_Method_Abstract
                                  'Customer' => $customer,
                                  'PaymentMethod' => $paymentMethod,
                                  'Products' => $products,
+                                 'Amount' => $amount,
                                  'PaymentObject' => $crypto];
 
         $result = Mage::getSingleton('s2p/api')->checkout($transaction);

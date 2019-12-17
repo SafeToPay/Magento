@@ -98,6 +98,8 @@ class Safe2Pay_S2P_Model_Boleto extends Mage_Payment_Model_Method_Abstract
                                  'Customer' => $customer,
                                  'PaymentMethod' => $paymentMethod,
                                  'Products' => $products,
+                                 'Amount' => $amount,
+                                 'DiscountAmount' => $order->getBaseDiscountAmount(),
                                  'PaymentObject' => $bankslip];
 
         $result = Mage::getSingleton('s2p/api')->checkout($transaction);
