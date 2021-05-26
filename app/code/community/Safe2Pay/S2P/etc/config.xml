@@ -10,7 +10,7 @@
 <config>
     <modules>
         <Safe2Pay_S2P>
-            <version>0.2.0</version>
+            <version>0.2.2</version>
         </Safe2Pay_S2P>
     </modules>
     <global>
@@ -49,6 +49,7 @@
                 <s2p_kdt_visitor><to_order_payment>*</to_order_payment></s2p_kdt_visitor>
                 
 
+                <s2p_pix_copy_paste><to_order_payment>*</to_order_payment></s2p_pix_copy_paste>
 
             </sales_convert_quote_payment>
         </fieldsets>
@@ -220,6 +221,16 @@
                 <sort_order>4</sort_order>
                 <group>s2p</group>
             </s2p_criptomoedas>
+            <s2p_pix>
+                <active>0</active>
+                <model>s2p/pix</model>
+                <title>Pix</title>
+                <payment_action>charge</payment_action>
+                <allowspecific>0</allowspecific>
+                <expiration>86400</expiration>
+                <sort_order>5</sort_order>
+                <group>s2p</group>
+            </s2p_pix>
         </payment>
     </default>
 </config>

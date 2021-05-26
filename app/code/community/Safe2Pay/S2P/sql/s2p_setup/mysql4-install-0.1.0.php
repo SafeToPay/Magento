@@ -28,8 +28,8 @@ foreach ($attributes as $attribute => $options) {
 $entity = 'order_payment';
 $attributes = array(
     'safe2pay_transaction_id'   => array('type' => Varien_Db_Ddl_Table::TYPE_VARCHAR),
-    's2p_url'                  => array('type' => Varien_Db_Ddl_Table::TYPE_VARCHAR),
-    's2p_pdf'                  => array('type' => Varien_Db_Ddl_Table::TYPE_VARCHAR),
+    's2p_url'                   => array('type' => Varien_Db_Ddl_Table::TYPE_VARCHAR),
+    's2p_pdf'                   => array('type' => Varien_Db_Ddl_Table::TYPE_VARCHAR),
     'installments'              => array('type' => Varien_Db_Ddl_Table::TYPE_SMALLINT),
     'installment_description'   => array('type' => Varien_Db_Ddl_Table::TYPE_VARCHAR),
 );

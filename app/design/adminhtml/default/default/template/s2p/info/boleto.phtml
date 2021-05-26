@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * @category   Safe2Pay
@@ -9,9 +10,9 @@
 <img src="<?php echo $this->getSkinUrl('s2p/images/logo.png'); ?>" width="80" /><br />
 <strong><?php echo $this->htmlEscape($this->getMethod()->getTitle()) ?></strong>
 
-<?php if($this->getInfo()): ?>
-<br />
-<?php echo $this->__('Invoice') ?>: <a href="#" onclick="return S2P.load('<?php echo $this->getUrl('adminhtml/s2p_invoice/view', array('id' => $this->getInvoiceId())) ?>');"><?php echo $this->escapeHtml($this->getInvoiceId()) ?></a>
-<br />
-<a href="<?php echo $this->getInvoiceUrl() ?>" target="_blank"><?php echo $this->__('Clique aqui para baixar o boleto') ?></a>
+<?php if ($this->getInfo()) : ?>
+    <br />
+    <?php echo $this->__('Invoice') ?>: <a href="#" onclick="return S2P.load('<?php echo $this->getUrl('adminhtml/s2p_invoice/view', array('id' => $this->getInvoiceId())) ?>');"><?php echo $this->escapeHtml($this->getInvoiceId()) ?></a>
+    <br />
+    <a href="<?php echo $this->getInvoiceUrl() ?>" target="_blank"><?php echo $this->__('Clique aqui para baixar o boleto') ?></a>
 <?php endif ?>

@@ -83,6 +83,11 @@
                     <block>s2p/checkout_success_payment_criptomoedas</block>
                     <template>s2p/checkout/success/payment/criptomoedas.phtml</template>
                 </action>
+                <action method="addPaymentRender">
+                    <type>s2p_pix</type>
+                    <block>s2p/checkout_success_payment_pix</block>
+                    <template>s2p/checkout/success/payment/pix.phtml</template>
+                </action>
             </block>
         </reference>
     </s2p_checkout_success_handle>

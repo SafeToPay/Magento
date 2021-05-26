@@ -33,6 +33,12 @@ class Safe2Pay_S2P_Model_Api extends Safe2Pay_S2P_Model_Api_Abstract
         return $response;
     }
 
+    public function refundPix($id)
+    {
+        $response = $this->request($this->getRefundPixUrl($id), null, Zend_Http_Client::POST);
+        return $response;
+    }
+
     public function getTokenizeUrl()
     {
         $url = $this->getPaymentBaseUrl() . '/token';
@@ -48,6 +54,12 @@ class Safe2Pay_S2P_Model_Api extends Safe2Pay_S2P_Model_Api_Abstract
     public function getRefundUrl($id)
     {
         $url = $this->getApiBaseUrl() . '/CreditCard/Cancel/' . $id;
+        return $url;
+    }
+
+    public function getRefundPixUrl($id)
+    {
+        $url = $this->getApiBaseUrl() . '/Pix/Cancel/' . $id;
         return $url;
     }
 }

@@ -22,6 +22,8 @@ class Safe2Pay_S2P_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_BANKSLIP_DUE_DAYS           = 'payment/s2p_boleto/due_days';
     const XML_PATH_BANKSLIP_PAY_AFTER_DUE      = 'payment/s2p_boleto/pay_after_due';
 
+    const XML_PATH_EXPIRATION                  = 'payment/s2p_pix/expiration';
+
 
     public function getInstructions()
     {
@@ -55,10 +57,6 @@ class Safe2Pay_S2P_Helper_Data extends Mage_Core_Helper_Abstract
         $canPayAfterDue = Mage::getStoreConfig(self::XML_PATH_BANKSLIP_PAY_AFTER_DUE);
         return !$canPayAfterDue;
     }
-
-
-
-
 
     public function getMode()
     {
@@ -98,12 +96,10 @@ class Safe2Pay_S2P_Helper_Data extends Mage_Core_Helper_Abstract
         return $apiSecretKey;
     }
 
-
-
-
-
-
-
+    public function getExpirationPix()
+    {
+        return Mage::getStoreConfig(self::XML_PATH_EXPIRATION);
+    }
 
     public function getPhonePrefix($telephone)
     {
@@ -186,7 +182,6 @@ class Safe2Pay_S2P_Helper_Data extends Mage_Core_Helper_Abstract
         return $results;
     }
 
-
     public function getCardToken($customer_card_id, $customer_id)
     {
         $resource = Mage::getSingleton("core/resource");
@@ -197,8 +192,6 @@ class Safe2Pay_S2P_Helper_Data extends Mage_Core_Helper_Abstract
 
         return $result;
     }
-
-
 
     public function insertToken($tokenize)
     {
@@ -214,7 +207,6 @@ class Safe2Pay_S2P_Helper_Data extends Mage_Core_Helper_Abstract
         return $result;
     }
 
-
     public function deleteToken($customerCardId, $customerId)
     {
         $resource = Mage::getSingleton("core/resource");
@@ -224,16 +216,12 @@ class Safe2Pay_S2P_Helper_Data extends Mage_Core_Helper_Abstract
         $connection->query($sql);
     }
 
-
-
     public function Log($filename, $texto)
     {
          $fp = fopen('c:\\out\\' . $filename . '.txt', 'w');
          fwrite($fp, Mage::helper('core')->jsonEncode($texto));
          fclose($fp);
     }
-
-
 
     public function tokenize($credit_card, $feedbacks)
     {

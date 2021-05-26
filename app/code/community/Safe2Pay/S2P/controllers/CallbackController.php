@@ -8,13 +8,11 @@ class CallbackController extends Mage_Core_Controller_Front_Action
         $store_secret_key = Mage::helper('s2p')->getApiSecretKey();
 
         // Verifica se a secret key da requisição bate com a da loja.
-        if ($secret_key == $store_secret_key)
-        {
+        if ($secret_key == $store_secret_key) {
             // Busca o orderId do magento pelo transacionId do Safe2Pay
             $orderId = $this->_getOrderIdByTransactionId($this->getRequest()->getParam('IdTransaction'));
 
-            if (!$orderId)
-            {
+            if (!$orderId) {
                 // Caso não encontre um pedido no magento, retorna o httpstatus 404
                 $this->_forward('404');
             }
@@ -22,8 +20,7 @@ class CallbackController extends Mage_Core_Controller_Front_Action
             $transaction_status = $this->getRequest()->getParam('TransactionStatus');
 
             // Verifica se a transação está paga
-            if ($transaction_status == "3")
-            {
+            if ($transaction_status == "3") {
                 $order = Mage::getModel('sales/order')->load($orderId);
 
                 if (!$order->canInvoice()) {
@@ -47,14 +44,10 @@ class CallbackController extends Mage_Core_Controller_Front_Action
 
                 $this->getResponse()->setBody('ok');
                 return;
-            }
-            else
-            {
+            } else {
                 $this->getResponse()->setBody('ok');
             }
-        }
-        else
-        {
+        } else {
             // Caso a secret informada não esteja correta, responde o httpstatus 401
             $this->_forward('401');
         }
